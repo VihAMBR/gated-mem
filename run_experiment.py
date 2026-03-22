@@ -208,6 +208,51 @@ def cmd_threshold_sweep(args):
     run_cmd([sys.executable, "analyze_results.py"], "Comparison report")
 
 
+# ─── Experiment: lme (LongMemEval) ───────────────────────────────────────────
+
+LME_DATASET = "LongMemEval/data/longmemeval_s_cleaned.json"
+
+
+def cmd_lme(args):
+    RESULTS_DIR.mkdir(exist_ok=True)
+    results_file = str(RESULTS_DIR / f"lme_{args.mode}.json")
+    scored_file = str(RESULTS_DIR / f"lme_{args.mode}_scored.json")
+
+    generate_args = [
+        sys.executable, "run_longmemeval.py",
+        "--dataset", args.lme_dataset,
+        "--output", results_file,
+        "--top_k", str(args.top_k),
+        "--mode", args.mode,
+        "--answer_workers", str(args.answer_workers),
+    ]
+    if args.mode != "naive":
+        generate_args += [
+            "--threshold", str(args.threshold),
+            "--gate_mode", args.gate_mode,
+        ]
+    if args.max_instances:
+        generate_args += ["--max_instances", str(args.max_instances)]
+    if args.mode == "neuroplastic":
+        if not getattr(args, "enable_ltp", True):
+            generate_args.append("--no_ltp")
+        if not getattr(args, "enable_associations", True):
+            generate_args.append("--no_associations")
+        if not getattr(args, "enable_inhibition", True):
+            generate_args.append("--no_inhibition")
+        if not getattr(args, "enable_consolidation", True):
+            generate_args.append("--no_consolidation")
+
+    run_cmd(generate_args, f"Phase 1/2: Generate answers (LME, {args.mode})")
+
+    run_cmd([
+        sys.executable, "eval_longmemeval.py",
+        "--results", results_file,
+        "--output", scored_file,
+        "--max_workers", str(args.eval_workers),
+    ], "Phase 2/2: Judge with LongMemEval prompts")
+
+
 # ─── Experiment: compare ─────────────────────────────────────────────────────
 
 def cmd_compare(args):
@@ -261,6 +306,23 @@ def main():
     p.add_argument("--quick", action="store_true", help="Run only 4 key configs instead of full 10")
     p.set_defaults(func=cmd_threshold_sweep)
 
+    # lme (LongMemEval)
+    p = subparsers.add_parser("lme", help="Run LongMemEval benchmark (naive/enhanced/inhibition/neuroplastic)")
+    p.add_argument("--mode", choices=["naive", "enhanced", "inhibition", "neuroplastic"], default="naive")
+    p.add_argument("--lme_dataset", default=LME_DATASET, help="Path to LongMemEval JSON")
+    p.add_argument("--top_k", type=int, default=30)
+    p.add_argument("--threshold", type=float, default=0.2)
+    p.add_argument("--gate_mode", default="fixed")
+    p.add_argument("--max_instances", type=int, default=None, help="Limit instances (for testing)")
+    p.add_argument("--answer_workers", type=int, default=4)
+    p.add_argument("--eval_workers", type=int, default=4)
+    p.add_argument("--no_ltp", action="store_true", help="Disable LTP/LTD (neuroplastic mode)")
+    p.add_argument("--no_associations", action="store_true", help="Disable associations (neuroplastic mode)")
+    p.add_argument("--no_inhibition", action="store_true", help="Disable inhibition (neuroplastic mode)")
+    p.add_argument("--no_consolidation", action="store_true", help="Disable consolidation (neuroplastic mode)")
+    p.set_defaults(func=cmd_lme, enable_ltp=True, enable_associations=True,
+                   enable_inhibition=True, enable_consolidation=True)
+
     # compare
     p = subparsers.add_parser("compare", help="Print comparison table of all completed runs")
     p.set_defaults(func=cmd_compare)
@@ -274,6 +336,7 @@ def main():
         print("  surprise_gated     Store only surprising turns (with gating)")
         print("  enhanced_gated     Surprise gate + temporal bypass + entity novelty")
         print("  threshold_sweep    Run gated encoder across multiple configs")
+        print("  lme                Run LongMemEval benchmark (naive/enhanced/inhibition)")
         print("  compare            Compare results from all completed runs")
         sys.exit(1)
 

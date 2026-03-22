@@ -1,8 +1,10 @@
-# Surprise-Gated Memory for Long-Term Conversational Agents
+# Neuroplastic Memory for Long-Term Conversational Agents
 
-This project investigates whether **selective memory storage** can match or beat **brute-force storage** in long-term conversational AI. The core hypothesis: human memory doesn't record everything — it stores what's *surprising*. Can we apply the same principle to LLM memory systems?
+This project builds a **biologically-inspired memory system** for LLM agents. Starting from a naive "store everything" baseline, we progressively add neuroplastic mechanisms: surprise-gating, temporal/entity bypass, belief revision through inhibition, memory consolidation, and retrieval strengthening.
 
-We evaluate all experiments on the [LoCoMo benchmark](https://github.com/memodb-io/memobase), which tests how well a memory system answers questions about multi-session conversations across four categories: single-hop, temporal, multi-hop, and open-domain.
+We evaluate on two benchmarks:
+- **[LoCoMo](https://github.com/memodb-io/memobase)** — 10 multi-session conversations, 1540 questions across single-hop, temporal, multi-hop, and open-domain categories
+- **[LongMemEval](https://github.com/xiaowu0162/LongMemEval)** (ICLR 2025) — 500 evaluation instances testing information extraction, multi-session reasoning, temporal reasoning, knowledge updates, and abstention
 
 ## Setup
 
@@ -18,8 +20,13 @@ cp .env.example .env
 ```
 
 ```bash
-# Download spaCy model (needed for enhanced gated experiments)
+# Download spaCy model (needed for enhanced/neuroplastic experiments)
 python -m spacy download en_core_web_sm
+
+# Download LongMemEval dataset (needed for LME experiments)
+mkdir -p LongMemEval/data
+curl -sL -o LongMemEval/data/longmemeval_s_cleaned.json \
+  "https://huggingface.co/datasets/xiaowu0162/longmemeval-cleaned/resolve/main/longmemeval_s_cleaned.json"
 ```
 
 **Requirements:** Python 3.10+, an OpenAI API key (for GPT-4o-mini).
@@ -32,11 +39,14 @@ The embedding model (`all-MiniLM-L6-v2`) downloads automatically on first run (~
 # Verify the pipeline works (5 questions, ~30 seconds)
 python test_quick.py
 
-# Run an experiment on 2 conversations (~5 min + ~10 min eval)
+# LoCoMo experiments
 python run_experiment.py naive_baseline --max_convs 2
-
-# Run a gated experiment
 python run_experiment.py surprise_gated --threshold 0.3 --max_convs 2
+python run_experiment.py enhanced_gated --threshold 0.2 --max_convs 2
+
+# LongMemEval experiments
+python run_experiment.py lme --mode naive --max_instances 10
+python run_experiment.py lme --mode neuroplastic --max_instances 10
 
 # Compare all completed runs
 python run_experiment.py compare
@@ -274,7 +284,141 @@ No API calls — this just reads existing result files.
 
 ---
 
-## Results (Full 10-conversation LoCoMo benchmark, 1540 questions)
+### Experiment 6: LongMemEval Benchmark
+
+**Question:** How does our memory system perform on a different benchmark with different question types — especially knowledge updates and temporal reasoning?
+
+[LongMemEval](https://github.com/xiaowu0162/LongMemEval) (ICLR 2025) is a 500-instance benchmark where each instance has its own chat history (~40 sessions, ~500 turns, ~115K tokens). Unlike LoCoMo (two friends chatting), LongMemEval uses user-assistant format. It tests six categories:
+
+- **IE-User / IE-Asst / IE-Pref**: Information extraction from user/assistant/preference messages
+- **MR**: Multi-session reasoning (connecting facts across sessions)
+- **TR**: Temporal reasoning (date arithmetic, sequence questions)
+- **KU**: Knowledge updates (has the user's information changed?)
+
+The adapter (`run_longmemeval.py`) feeds LongMemEval's format through our existing pipeline with speaker-role separation.
+
+**Run:**
+
+```bash
+# Naive baseline (500 instances, ~4 hours)
+python run_experiment.py lme --mode naive
+
+# Multi-signal gated (surprise + temporal + entity bypass)
+python run_experiment.py lme --mode enhanced
+
+# With belief revision inhibition
+python run_experiment.py lme --mode inhibition
+
+# Full neuroplastic (all 4 mechanisms)
+python run_experiment.py lme --mode neuroplastic
+
+# Quick test (10 instances, ~5 min)
+python run_experiment.py lme --mode naive --max_instances 10
+```
+
+**Key files:**
+- `run_longmemeval.py` — LongMemEval adapter and runner
+- `eval_longmemeval.py` — LongMemEval judge (uses their official per-type prompts)
+
+---
+
+### Experiment 7: Neuroplastic Memory
+
+**Question:** Can a memory system that reorganizes itself through use — like a brain — outperform static memory?
+
+Four biologically-inspired plasticity mechanisms, each with its own `--enable/--no` flag:
+
+**Mechanism 1: Retrieval Strengthening & Decay (LTP/LTD)**
+- Memories retrieved for correctly answered questions get a weight boost (`retrieval_weight *= 1.05`)
+- All memories decay gently over time (`retrieval_weight *= 0.99`), floored at 0.1
+- Emergent behavior: frequently useful memories float to the top; noise sinks
+
+**Mechanism 2: Associative Linking (Hebbian Learning)**
+- Memories co-retrieved for the same question get their co-retrieval count incremented
+- After 3+ co-retrievals, a strong link forms
+- During retrieval, one-hop expansion surfaces linked memories FAISS wouldn't return
+- Emergent behavior: multi-hop reasoning improves as the system discovers which facts go together
+
+**Mechanism 3: Belief Revision through Inhibition**
+- When a newer memory has high embedding similarity (>0.85) to an older one from a different session, the older one gets inhibited (`inhibition_weight = 0.7`)
+- Inhibited memories are suppressed but not deleted — queries about past states ("where did you used to live?") temporarily reduce inhibition
+- Directly tests LongMemEval's knowledge-update category
+
+**Mechanism 4: Memory Consolidation (Sleep-time Reorganization)**
+- Merge near-duplicate memories (cosine > 0.92): keep the stronger one, inhibit the weaker
+- Extra decay for never-retrieved memories
+- Generate centroid-based abstract "summary" memories from clusters of 3+ similar memories
+- Emergent behavior: episodic memories → semantic patterns
+
+**Run:**
+
+```bash
+# All mechanisms enabled (default)
+python run_experiment.py lme --mode neuroplastic
+
+# Ablations
+python run_experiment.py lme --mode neuroplastic --no_ltp
+python run_experiment.py lme --mode neuroplastic --no_associations
+python run_experiment.py lme --mode neuroplastic --no_inhibition
+python run_experiment.py lme --mode neuroplastic --no_consolidation
+```
+
+**Key files:**
+- `neuroplastic_memory.py` — `RetrievalPlasticity`, `AssociationGraph`, `BeliefRevisionDetector`, `ConsolidationEngine`, `NeuroplasticMemory`
+
+**Architecture:**
+
+```
+Message Stream
+    │
+    ▼
+┌─────────────────────────┐
+│  ENCODING                │
+│  • Surprise gate         │
+│  • Temporal bypass       │
+│  • Entity novelty bypass │
+│  • Belief revision       │
+│    (inhibit superseded)  │
+└────────────┬────────────┘
+             │
+             ▼
+┌─────────────────────────┐
+│  MEMORY STORE            │
+│  MemoryRecord objects    │
+│  with plasticity state:  │
+│  • retrieval_weight      │
+│  • inhibition_weight     │
+│  • associations          │
+│  • retrieval_count       │
+└────────────┬────────────┘
+             │
+    ┌────────┴────────┐
+    │                 │
+    ▼                 ▼
+┌──────────┐  ┌───────────────┐
+│ RETRIEVAL│  │ CONSOLIDATION │
+│ • FAISS  │  │ (periodic)    │
+│ • Weight │  │ • Merge dupes │
+│ • Assoc  │  │ • Decay       │
+│   expand │  │ • Abstract    │
+│ • Inhib  │  │               │
+│   aware  │  │               │
+└────┬─────┘  └───────────────┘
+     │
+     ▼
+┌─────────────────────────┐
+│  FEEDBACK                │
+│  • Strengthen if CORRECT │
+│  • Update co-retrieval   │
+│    graph                 │
+└─────────────────────────┘
+```
+
+---
+
+## Results
+
+### LoCoMo Benchmark (10 conversations, 1540 questions)
 
 | Config | Memories | Compression | Overall | Single-hop | Temporal | Multi-hop | Open-domain | vs Baseline |
 |--------|----------|------------|---------|------------|----------|-----------|-------------|-------------|
@@ -282,19 +426,28 @@ No API calls — this just reads existing result files.
 | Surprise t=0.2 | 3808/5882 | 35.3% | 57.9% | 55.3% | 49.8% | 43.8% | 63.5% | -4.1% |
 | **Enhanced t=0.2** | **3700/5314** | **30.4%** | **61.6%** | **57.1%** | **59.5%** | **44.8%** | **65.9%** | **-0.4%** |
 
-**Key findings:**
+### LongMemEval Benchmark (LongMemEval_S, 500 instances, ~115K tokens each)
 
-- **Enhanced gating matches the baseline while storing 30% less data.** The temporal and entity bypasses recover the information that pure surprise-gating destroys. At 61.6% vs 62.0%, the difference is 0.4% — within noise on 1540 questions.
+| Config | IE-User | IE-Asst | IE-Pref | MR | TR | KU | Overall |
+|--------|---------|---------|---------|-----|-----|-----|---------|
+| Naive (store all) | 95.7% | 98.2% | 36.7% | 54.9% | 67.7% | 84.6% | **72.4%** |
+| Enhanced gated | *running* | | | | | | |
+| Inhibition-only | *running* | | | | | | |
+| **Neuroplastic** | *running* | | | | | | |
 
-- **Temporal questions nearly fully recovered** (49.8% → 59.5%, vs baseline 60.7%). Pure surprise-gating at t=0.2 dropped temporal by 11 points because routine timestamped updates look "unsurprising." The temporal bypass reclaims most of that loss.
+*Enhanced, inhibition, and neuroplastic runs are in progress. Results will be updated when complete.*
 
-- **Single-hop actually improves** (54.3% → 57.1%). The entity novelty bypass captures factual mentions that single-hop questions target, which pure cosine similarity sometimes misses.
+### Key Findings
 
-- **Multi-hop holds steady** at 44.8%, exactly matching baseline. Distinctive facts that multi-hop questions chain together are inherently "surprising" enough to pass the gate even without bypasses.
+**LoCoMo:**
+- **Enhanced gating matches the baseline while storing 30% less data.** At 61.6% vs 62.0%, the difference is 0.4% — within noise on 1540 questions.
+- **Temporal questions nearly fully recovered** (49.8% → 59.5%, vs baseline 60.7%). The temporal bypass reclaims what pure surprise-gating destroys.
+- **Single-hop actually improves** (54.3% → 57.1%). Entity novelty bypass captures factual mentions that cosine similarity sometimes misses.
 
-- **The quality/compression tradeoff is steep for pure surprise-gating** (57.9% at 35% compression). But the enhanced approach breaks this tradeoff — it compresses 30% while losing only 0.4% quality, compared to 4.1% loss from pure surprise gating at similar compression.
-
-- **Bypass breakdown across all conversations**: 965 messages saved by temporal detection, 463 by entity novelty (out of ~5300 total messages). These bypasses are why the enhanced encoder recovers temporal and single-hop accuracy without sacrificing compression.
+**LongMemEval:**
+- **Naive baseline achieves 72.4% overall** on LongMemEval_S. Strong on information extraction (95-98% for user/assistant) but weaker on multi-session reasoning (54.9%) and preferences (36.7%).
+- **Knowledge updates score 84.6%** — already strong without inhibition. The hypothesis is that belief revision via inhibition will push this higher.
+- **Temporal reasoning at 67.7%** — the enhanced gated encoder's temporal bypass should help here.
 
 ---
 
@@ -303,12 +456,15 @@ No API calls — this just reads existing result files.
 ```
 gated-mem/
 ├── run_experiment.py            # Unified entry point for all experiments
-├── run_naive_baseline.py        # Experiment 1: naive baseline system
-├── run_gated_baseline.py        # Experiment 2: surprise-gated system
-├── run_enhanced_gated.py        # Experiment 3: enhanced gated system
+├── run_naive_baseline.py        # Experiment 1: naive baseline (LoCoMo)
+├── run_gated_baseline.py        # Experiment 2: surprise-gated (LoCoMo)
+├── run_enhanced_gated.py        # Experiment 3: enhanced gated (LoCoMo)
+├── run_longmemeval.py           # Experiment 6: LongMemEval adapter & runner
+├── eval_longmemeval.py          # LongMemEval judge (official prompts per type)
 ├── surprise_gated_encoder.py    # Core: SurpriseGatedEncoder class
-├── enhanced_gated_encoder.py    # Enhanced: temporal bypass + entity novelty + MemoryRecord
-├── evals.py                     # Evaluation pipeline (BLEU + F1 + LLM judge)
+├── enhanced_gated_encoder.py    # Enhanced: temporal/entity bypass + MemoryRecord
+├── neuroplastic_memory.py       # Neuroplastic: LTP/LTD, associations, inhibition, consolidation
+├── evals.py                     # LoCoMo evaluation pipeline (BLEU + F1 + LLM judge)
 ├── generate_scores.py           # Per-category score aggregation
 ├── analyze_results.py           # Cross-experiment comparison table
 ├── test_quick.py                # 5-question smoke test
@@ -318,6 +474,7 @@ gated-mem/
 │   └── utils.py                 # BLEU, F1 calculations
 ├── dataset/
 │   └── locomo10.json            # LoCoMo benchmark (10 conversations)
+├── LongMemEval/                 # LongMemEval repo + data (gitignored, see Setup)
 ├── results/                     # Benchmark results (committed)
 ├── requirements.txt
 ├── .env.example
@@ -327,31 +484,26 @@ gated-mem/
 ## Pipeline Architecture
 
 ```
-dataset/locomo10.json
-         │
-         ├──► run_naive_baseline.py ──────────────────────► results/*_results.json
-         │         (store all turns)                              │
-         │                                                        │
-         ├──► run_gated_baseline.py ──────────────────────► results/gated_*.json
-         │         │                                              │
-         │         └── surprise_gated_encoder.py                  │
-         │              (filter by novelty)                        │
-         │                                                        │
-         ├──► run_enhanced_gated.py ──────────────────────► results/enhanced_*.json
-         │         │                                              │
-         │         └── enhanced_gated_encoder.py                  │
-         │              (surprise + temporal + entity)             │
-         │                                                        ▼
-         │                                                   evals.py
-         │                                              (BLEU + F1 + LLM Judge)
-         │                                                        │
-         │                                                        ▼
-         │                                              results/*_evals.json
-         │                                                        │
-         │                                            ┌───────────┴───────────┐
-         │                                            ▼                       ▼
-         │                                    generate_scores.py      analyze_results.py
-         │                                    (per-category)          (cross-experiment)
+LoCoMo (dataset/locomo10.json)          LongMemEval (LongMemEval/data/*.json)
+         │                                        │
+         ├──► run_naive_baseline.py                ├──► run_longmemeval.py --mode naive
+         ├──► run_gated_baseline.py                ├──► run_longmemeval.py --mode enhanced
+         ├──► run_enhanced_gated.py                ├──► run_longmemeval.py --mode inhibition
+         │                                         ├──► run_longmemeval.py --mode neuroplastic
+         │                                         │
+         │    Shared modules:                      │
+         │    ├── surprise_gated_encoder.py         │
+         │    ├── enhanced_gated_encoder.py         │
+         │    └── neuroplastic_memory.py            │
+         │                                         │
+         ▼                                         ▼
+    results/*.json                          results/lme_*.json
+         │                                         │
+         ▼                                         ▼
+    evals.py (BLEU + F1 + LLM Judge)       eval_longmemeval.py (official prompts)
+         │                                         │
+         ▼                                         ▼
+    results/*_evals.json                    results/lme_*_scored.json
 ```
 
 ## Running Individual Components

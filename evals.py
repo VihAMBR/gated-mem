@@ -68,6 +68,9 @@ def main():
     with open(args.input_file, "r") as f:
         data = json.load(f)
 
+    # Filter out metadata keys (e.g. "gate_info") — only process conversation results
+    conv_items = {k: v for k, v in data.items() if k not in ("gate_info",) and isinstance(v, list)}
+
     results = defaultdict(list)
     results_lock = threading.Lock()
 
@@ -76,7 +79,7 @@ def main():
         max_workers=args.max_workers
     ) as executor:
         futures = [
-            executor.submit(process_item, item_data) for item_data in data.items()
+            executor.submit(process_item, item_data) for item_data in conv_items.items()
         ]
 
         for future in tqdm(

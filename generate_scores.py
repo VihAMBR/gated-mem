@@ -11,9 +11,11 @@ categories = ["single_hop", "temporal", "multi_hop", "open_domain"]
 with open(args.input_path, "r") as f:
     data = json.load(f)
 
-# Flatten the data into a list of question items
+# Flatten the data into a list of question items (skip metadata keys)
 all_items = []
 for key in data:
+    if key in ("gate_info",) or not isinstance(data[key], list):
+        continue
     all_items.extend(data[key])
 
 # Convert to DataFrame

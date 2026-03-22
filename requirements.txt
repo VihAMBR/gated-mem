@@ -1,0 +1,11 @@
+openai
+sentence-transformers
+faiss-cpu
+numpy
+jinja2
+python-dotenv
+tqdm
+pandas
+nltk
+rouge-score
+bert-score

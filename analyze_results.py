@@ -84,15 +84,20 @@ def main():
             **{k: f"{v:.1%}" if isinstance(v, float) else v for k, v in scores.items()},
         })
 
-    # Gated runs
-    for results_file in sorted(RESULTS_DIR.glob("gated_t*_evals.json")):
+    # Gated runs (surprise-gated and enhanced)
+    eval_files = sorted(RESULTS_DIR.glob("gated_t*_evals.json")) + sorted(RESULTS_DIR.glob("enhanced_t*_evals.json"))
+    for results_file in eval_files:
         name = results_file.stem.replace("_evals", "")
         source_file = RESULTS_DIR / f"{name}.json"
 
         scores = load_eval_scores(str(results_file))
         gate = load_gate_info(str(source_file)) if source_file.exists() else None
 
-        parts = name.replace("gated_t", "").split("_", 2)
+        if name.startswith("enhanced_t"):
+            prefix = "enhanced_t"
+        else:
+            prefix = "gated_t"
+        parts = name.replace(prefix, "").split("_", 2)
         threshold = parts[0] if parts else "?"
         mode = parts[1] if len(parts) > 1 else "?"
         metric = parts[2] if len(parts) > 2 else "?"

@@ -13,6 +13,7 @@ Usage:
 Experiments:
     naive_baseline        Store every conversation turn (no filtering)
     surprise_gated        Store only "surprising" turns (cosine novelty gate)
+    enhanced_gated        Surprise gate + temporal bypass + entity novelty bypass
     threshold_sweep       Run surprise_gated across multiple threshold configs
     compare               Print comparison table across all completed runs
 
@@ -96,6 +97,43 @@ def cmd_surprise_gated(args):
         generate_args += ["--max_convs", str(args.max_convs)]
 
     run_cmd(generate_args, f"Phase 1/3: Generate answers (gated, {tag})")
+
+    run_cmd([
+        sys.executable, "evals.py",
+        "--input_file", results_file,
+        "--output_file", evals_file,
+        "--max_workers", str(args.eval_workers),
+    ], "Phase 2/3: Evaluate (BLEU + F1 + LLM Judge)")
+
+    run_cmd([
+        sys.executable, "generate_scores.py",
+        "--input_path", evals_file,
+    ], "Phase 3/3: Report scores")
+
+
+# ─── Experiment: enhanced_gated ───────────────────────────────────────────────
+
+def cmd_enhanced_gated(args):
+    RESULTS_DIR.mkdir(exist_ok=True)
+    tag = f"t{args.threshold}_{args.mode}_{args.metric}"
+    results_file = str(RESULTS_DIR / f"enhanced_{tag}.json")
+    evals_file = str(RESULTS_DIR / f"enhanced_{tag}_evals.json")
+
+    generate_args = [
+        sys.executable, "run_enhanced_gated.py",
+        "--dataset", args.dataset,
+        "--output", results_file,
+        "--top_k", str(args.top_k),
+        "--threshold", str(args.threshold),
+        "--mode", args.mode,
+        "--metric", args.metric,
+        "--warmup", str(args.warmup),
+        "--answer_workers", str(args.answer_workers),
+    ]
+    if args.max_convs:
+        generate_args += ["--max_convs", str(args.max_convs)]
+
+    run_cmd(generate_args, f"Phase 1/3: Generate answers (enhanced gated, {tag})")
 
     run_cmd([
         sys.executable, "evals.py",
@@ -207,6 +245,16 @@ def main():
     p.add_argument("--warmup", type=int, default=3, help="Store first N messages unconditionally")
     p.set_defaults(func=cmd_surprise_gated)
 
+    # enhanced_gated
+    p = subparsers.add_parser("enhanced_gated", help="Surprise gate + temporal bypass + entity novelty")
+    add_common_args(p)
+    p.add_argument("--threshold", type=float, default=0.3, help="Surprise threshold")
+    p.add_argument("--mode", choices=["fixed", "adaptive"], default="fixed", help="Threshold mode")
+    p.add_argument("--metric", choices=["nearest_neighbor", "centroid"], default="nearest_neighbor", help="Surprise metric")
+    p.add_argument("--warmup", type=int, default=3, help="Store first N messages unconditionally")
+    p.add_argument("--answer_workers", type=int, default=4, help="Parallel workers for question answering in generate phase")
+    p.set_defaults(func=cmd_enhanced_gated)
+
     # threshold_sweep
     p = subparsers.add_parser("threshold_sweep", help="Run gated encoder across multiple configs")
     add_common_args(p)
@@ -224,6 +272,7 @@ def main():
         print("\nAvailable experiments:")
         print("  naive_baseline     Store every turn, retrieve by similarity")
         print("  surprise_gated     Store only surprising turns (with gating)")
+        print("  enhanced_gated     Surprise gate + temporal bypass + entity novelty")
         print("  threshold_sweep    Run gated encoder across multiple configs")
         print("  compare            Compare results from all completed runs")
         sys.exit(1)

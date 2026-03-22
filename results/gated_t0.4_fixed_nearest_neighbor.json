@@ -1,0 +1,2133 @@
+{
+  "0": [
+    {
+      "question": "When did Caroline go to the LGBTQ support group?",
+      "answer": "7 May 2023",
+      "category": 2,
+      "response": "7 May, 2023",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 1.271794080734253
+    },
+    {
+      "question": "When did Melanie paint a sunrise?",
+      "answer": 2022,
+      "category": 2,
+      "response": "No evidence of a sunrise painting.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.5155072212219238
+    },
+    {
+      "question": "What fields would Caroline be likely to pursue in her educaton?",
+      "answer": "Psychology, counseling certification",
+      "category": 3,
+      "response": "Counseling or social work.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.9315512180328369
+    },
+    {
+      "question": "What did Caroline research?",
+      "answer": "Adoption agencies",
+      "category": 1,
+      "response": "Adoption agencies.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 2.280102014541626
+    },
+    {
+      "question": "What is Caroline's identity?",
+      "answer": "Transgender woman",
+      "category": 1,
+      "response": "Caroline is an empathetic individual.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.9543910026550293
+    },
+    {
+      "question": "When did Melanie run a charity race?",
+      "answer": "The sunday before 25 May 2023",
+      "category": 2,
+      "response": "No mention of a charity race.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.9700863361358643
+    },
+    {
+      "question": "When is Melanie planning on going camping?",
+      "answer": "June 2023",
+      "category": 2,
+      "response": "Next month, June 2023.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.5386970043182373
+    },
+    {
+      "question": "What is Caroline's relationship status?",
+      "answer": "Single",
+      "category": 1,
+      "response": "Caroline is single.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.6016268730163574
+    },
+    {
+      "question": "When did Caroline give a speech at a school?",
+      "answer": "The week before 9 June 2023",
+      "category": 2,
+      "response": "No evidence found.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.5207128524780273
+    },
+    {
+      "question": "When did Caroline meet up with her friends, family, and mentors?",
+      "answer": "The week before 9 June 2023",
+      "category": 2,
+      "response": "Caroline met up on 8 May, 2023.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 1.5770978927612305
+    },
+    {
+      "question": "How long has Caroline had her current group of friends for?",
+      "answer": "4 years",
+      "category": 2,
+      "response": "About five years.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 1.6195318698883057
+    },
+    {
+      "question": "Where did Caroline move from 4 years ago?",
+      "answer": "Sweden",
+      "category": 1,
+      "response": "Sweden",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.5881710052490234
+    },
+    {
+      "question": "How long ago was Caroline's 18th birthday?",
+      "answer": "10 years ago",
+      "category": 2,
+      "response": "Caroline's 18th birthday was 5 years ago.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.842994213104248
+    },
+    {
+      "question": "What career path has Caroline decided to persue?",
+      "answer": "counseling or mental health for Transgender people",
+      "category": 1,
+      "response": "Counselor",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 2.1436049938201904
+    },
+    {
+      "question": "Would Caroline still want to pursue counseling as a career if she hadn't received support growing up?",
+      "answer": "Likely no",
+      "category": 3,
+      "response": "No evidence found in memories.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.4875950813293457
+    },
+    {
+      "question": "What activities does Melanie partake in?",
+      "answer": "pottery, camping, painting, swimming",
+      "category": 1,
+      "response": "Melanie enjoys camping, playing clarinet, and art.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.6693658828735352
+    },
+    {
+      "question": "When did Melanie sign up for a pottery class?",
+      "answer": "2 July 2023",
+      "category": 2,
+      "response": "No mention of pottery class.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 1.3818588256835938
+    },
+    {
+      "question": "When is Caroline going to the transgender conference?",
+      "answer": "July 2023",
+      "category": 2,
+      "response": "No mention of a conference.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.5438570976257324
+    },
+    {
+      "question": "Where has Melanie camped?",
+      "answer": "beach, mountains, forest",
+      "category": 1,
+      "response": "At the beach.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.6187260150909424
+    },
+    {
+      "question": "What do Melanie's kids like?",
+      "answer": "dinosaurs, nature",
+      "category": 1,
+      "response": "Learning about animals and dinosaurs.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.6617569923400879
+    },
+    {
+      "question": "When did Melanie go to the museum?",
+      "answer": "5 July 2023",
+      "category": 2,
+      "response": "Not mentioned in memories.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.7180511951446533
+    },
+    {
+      "question": "When did Caroline have a picnic?",
+      "answer": "The week before 6 July 2023",
+      "category": 2,
+      "response": "No mention of a picnic.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 1.128493070602417
+    },
+    {
+      "question": "Would Caroline likely have Dr. Seuss books on her bookshelf?",
+      "answer": "Yes, since she collects classic children's books",
+      "category": 3,
+      "response": "Yes, she has kids' books.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 1.059403896331787
+    },
+    {
+      "question": "What books has Melanie read?",
+      "answer": "\"Nothing is Impossible\", \"Charlotte's Web\"",
+      "category": 1,
+      "response": "No specific books mentioned.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 1.630063772201538
+    },
+    {
+      "question": "What does Melanie do to destress?",
+      "answer": "Running, pottery",
+      "category": 1,
+      "response": "Plays clarinet and relaxes.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.5943989753723145
+    },
+    {
+      "question": "When did Caroline go to the LGBTQ conference?",
+      "answer": "10 July 2023",
+      "category": 2,
+      "response": "8 May, 2023",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.6034340858459473
+    },
+    {
+      "question": "When did Melanie read the book \"nothing is impossible\"?",
+      "answer": 2022,
+      "category": 2,
+      "response": "No mention of the book.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.46410393714904785
+    },
+    {
+      "question": "Would Caroline pursue writing as a career option?",
+      "answer": "LIkely no; though she likes reading, she wants to be a counselor",
+      "category": 3,
+      "response": "No evidence found in memories.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.6789021492004395
+    },
+    {
+      "question": "When did Caroline go to the adoption meeting?",
+      "answer": "The friday before 15 July 2023",
+      "category": 2,
+      "response": "Caroline did not mention an adoption meeting.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.5667262077331543
+    },
+    {
+      "question": "When did Melanie go to the pottery workshop?",
+      "answer": "The Friday before 15 July 2023",
+      "category": 2,
+      "response": "15 July, 2023",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 2.2409939765930176
+    },
+    {
+      "question": "Would Melanie be considered a member of the LGBTQ community?",
+      "answer": "Likely no, she does not refer to herself as part of it",
+      "category": 3,
+      "response": "No evidence of LGBTQ membership.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.5674941539764404
+    },
+    {
+      "question": "When did Melanie go camping in June?",
+      "answer": "The week before 27 June 2023",
+      "category": 2,
+      "response": "Melanie went camping in June 2023.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.5373339653015137
+    },
+    {
+      "question": "What LGBTQ+ events has Caroline participated in?",
+      "answer": "Pride parade, school speech, support group",
+      "category": 1,
+      "response": "LGBTQ support group on 7 May 2023.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.5378072261810303
+    },
+    {
+      "question": "When did Caroline go to a pride parade during the summer?",
+      "answer": "The week before 3 July 2023",
+      "category": 2,
+      "response": "No evidence of a pride parade.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.5915830135345459
+    },
+    {
+      "question": "What events has Caroline participated in to help children?",
+      "answer": "Mentoring program, school speech",
+      "category": 1,
+      "response": "Charity race and advocacy event.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 2.4298129081726074
+    },
+    {
+      "question": "When did Melanie go camping in July?",
+      "answer": "two weekends before 17 July 2023",
+      "category": 2,
+      "response": "Melanie went camping in July 2023.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 1.3453359603881836
+    },
+    {
+      "question": "When did Caroline join a mentorship program?",
+      "answer": "The weekend before 17 July 2023",
+      "category": 2,
+      "response": "No mention of mentorship program.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.6628460884094238
+    },
+    {
+      "question": "What did Melanie paint recently?",
+      "answer": "sunset",
+      "category": 1,
+      "response": "No specific painting mentioned.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.856597900390625
+    },
+    {
+      "question": "What activities has Melanie done with her family?",
+      "answer": "Pottery, painting, camping, museum, swimming, hiking",
+      "category": 1,
+      "response": "Camping and beach outings.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.5776388645172119
+    },
+    {
+      "question": "In what ways is Caroline participating in the LGBTQ community?",
+      "answer": "Joining activist group, going to pride parades, participating in an art show, mentoring program",
+      "category": 1,
+      "response": "Attending support groups and sharing stories.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 1.536177158355713
+    },
+    {
+      "question": "How many times has Melanie gone to the beach in 2023?",
+      "answer": 2,
+      "category": 1,
+      "response": "Twice in 2023.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.5627651214599609
+    },
+    {
+      "question": "When did Caroline join a new activist group?",
+      "answer": "The Tuesday before 20 July 2023",
+      "category": 2,
+      "response": "8 May, 2023",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.48229193687438965
+    },
+    {
+      "question": "Would Melanie be more interested in going to a national park or a theme park?",
+      "answer": "National park; she likes the outdoors",
+      "category": 3,
+      "response": "National park",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.48630213737487793
+    },
+    {
+      "question": "What kind of art does Caroline make?",
+      "answer": "abstract art",
+      "category": 1,
+      "response": "Caroline creates pottery and paintings.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.6517770290374756
+    },
+    {
+      "question": "When is Melanie's daughter's birthday?",
+      "answer": "13 August",
+      "category": 2,
+      "response": "Not mentioned in memories.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.8341467380523682
+    },
+    {
+      "question": "When did Caroline attend a pride parade in August?",
+      "answer": "The Friday before 14 August 2023",
+      "category": 2,
+      "response": "No evidence of a pride parade.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.5840590000152588
+    },
+    {
+      "question": "Would Melanie be considered an ally to the transgender community?",
+      "answer": "Yes, she is supportive",
+      "category": 3,
+      "response": "Yes, she supports LGBTQ+ causes.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 1.0139589309692383
+    },
+    {
+      "question": "Who supports Caroline when she has a negative experience?",
+      "answer": "Her mentors, family, and friends",
+      "category": 1,
+      "response": "Melanie supports Caroline.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 1.5453319549560547
+    },
+    {
+      "question": "What types of pottery have Melanie and her kids made?",
+      "answer": "bowls, cup",
+      "category": 1,
+      "response": "No specific pottery types mentioned.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 1.0858879089355469
+    },
+    {
+      "question": "When did Caroline and Melanie go to a pride fesetival together?",
+      "answer": 2022,
+      "category": 2,
+      "response": "No evidence of a pride festival.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 1.8675858974456787
+    },
+    {
+      "question": "What would Caroline's political leaning likely be?",
+      "answer": "Liberal",
+      "category": 3,
+      "response": "Progressive or liberal.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 1.2386770248413086
+    },
+    {
+      "question": "What has Melanie painted?",
+      "answer": "Horse, sunset, sunrise",
+      "category": 1,
+      "response": "No specific painting mentioned.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 1.7763679027557373
+    },
+    {
+      "question": "What are Melanie's pets' names?",
+      "answer": "Oliver, Luna, Bailey",
+      "category": 1,
+      "response": "Not mentioned in memories.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.5309031009674072
+    },
+    {
+      "question": "When did Caroline apply to adoption agencies?",
+      "answer": "The week of 23 August 2023",
+      "category": 2,
+      "response": "25 May, 2023",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.8006212711334229
+    },
+    {
+      "question": "When did Caroline draw a self-portrait?",
+      "answer": "The week before 23 August 2023",
+      "category": 2,
+      "response": "No evidence of self-portrait.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.6942691802978516
+    },
+    {
+      "question": "What subject have Caroline and Melanie both painted?",
+      "answer": "Sunsets",
+      "category": 1,
+      "response": "LGBTQ support and community.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.8084979057312012
+    },
+    {
+      "question": "What symbols are important to Caroline?",
+      "answer": "Rainbow flag, transgender symbol",
+      "category": 1,
+      "response": "Rainbow flag and eagle.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.560352087020874
+    },
+    {
+      "question": "When did Caroline encounter people on a hike and have a negative experience?",
+      "answer": "The week before 25 August 2023",
+      "category": 2,
+      "response": "No memory of a hike.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.48951196670532227
+    },
+    {
+      "question": "When did Melanie make a plate in pottery class?",
+      "answer": "24 August 2023",
+      "category": 2,
+      "response": "No specific date mentioned.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.9005939960479736
+    },
+    {
+      "question": "Would Caroline be considered religious?",
+      "answer": "Somewhat, but not extremely religious",
+      "category": 3,
+      "response": "No explicit evidence of religion.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.7721989154815674
+    },
+    {
+      "question": "What instruments does Melanie play?",
+      "answer": "clarinet and violin",
+      "category": 1,
+      "response": "Melanie plays clarinet.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.888430118560791
+    },
+    {
+      "question": "What musical artists/bands has Melanie seen?",
+      "answer": "Summer Sounds, Matt Patterson",
+      "category": 1,
+      "response": "Melanie has seen \"Summer Sounds.\"",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.6613917350769043
+    },
+    {
+      "question": "When did Melanie go to the park?",
+      "answer": "27 August 2023",
+      "category": 2,
+      "response": "No memory of park visit.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.7491960525512695
+    },
+    {
+      "question": "When is Caroline's youth center putting on a talent show?",
+      "answer": "September 2023",
+      "category": 2,
+      "response": "No information available.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.37101006507873535
+    },
+    {
+      "question": "Would Melanie likely enjoy the song \"The Four Seasons\" by Vivaldi?",
+      "answer": "Yes; it's classical music",
+      "category": 3,
+      "response": "No evidence of interest in classical music.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.7461340427398682
+    },
+    {
+      "question": "What are some changes Caroline has faced during her transition journey?",
+      "answer": "Changes to her body, losing unsupportive friends",
+      "category": 1,
+      "response": "Courage, resilience, and self-expression.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.5686469078063965
+    },
+    {
+      "question": "What does Melanie do with her family on hikes?",
+      "answer": "Roast marshmallows, tell stories",
+      "category": 1,
+      "response": "No specific activity mentioned.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.5037698745727539
+    },
+    {
+      "question": "When did Caroline go biking with friends?",
+      "answer": "The weekend before 13 September 2023",
+      "category": 2,
+      "response": "No memory of biking with friends.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 1.396618127822876
+    },
+    {
+      "question": "How long has Melanie been practicing art?",
+      "answer": "Since 2016",
+      "category": 2,
+      "response": "Since childhood.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.508152961730957
+    },
+    {
+      "question": "What personality traits might Melanie say Caroline has?",
+      "answer": "Thoughtful, authentic, driven",
+      "category": 3,
+      "response": "Empathetic and understanding.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 1.5544111728668213
+    },
+    {
+      "question": "What transgender-specific events has Caroline attended?",
+      "answer": "Poetry reading, conference",
+      "category": 1,
+      "response": "LGBTQ support group on 7 May 2023.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 1.2799952030181885
+    },
+    {
+      "question": "What book did Melanie read from Caroline's suggestion?",
+      "answer": "\"Becoming Nicole\"",
+      "category": 1,
+      "response": "No specific book mentioned.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 2.0406529903411865
+    },
+    {
+      "question": "When did Melanie's friend adopt a child?",
+      "answer": 2022,
+      "category": 2,
+      "response": "2022",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 1.4727962017059326
+    },
+    {
+      "question": "When did Melanie get hurt?",
+      "answer": "September 2023",
+      "category": 2,
+      "response": "No mention of Melanie getting hurt.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 1.0425488948822021
+    },
+    {
+      "question": "When did Melanie's family go on a roadtrip?",
+      "answer": "The weekend before 20 October 2023",
+      "category": 2,
+      "response": "No mention of a roadtrip.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.6093640327453613
+    },
+    {
+      "question": "How many children does Melanie have?",
+      "answer": 3,
+      "category": 1,
+      "response": "Melanie has two children.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 1.8176381587982178
+    },
+    {
+      "question": "When did Melanie go on a hike after the roadtrip?",
+      "answer": "19 October 2023",
+      "category": 1,
+      "response": "No hike mentioned in memories.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.7694027423858643
+    },
+    {
+      "question": "Would Melanie go on another roadtrip soon?",
+      "answer": "Likely no; since this one went badly",
+      "category": 3,
+      "response": "No plans for a road trip.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 1.733834981918335
+    },
+    {
+      "question": "What items has Melanie bought?",
+      "answer": "Figurines, shoes",
+      "category": 1,
+      "response": "No specific items mentioned.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.9440319538116455
+    },
+    {
+      "question": "When did Caroline pass the adoption interview?",
+      "answer": "The Friday before 22 October 2023",
+      "category": 2,
+      "response": "No mention of adoption interview.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 2.356045961380005
+    },
+    {
+      "question": "When did Melanie buy the figurines?",
+      "answer": "21 October 2023",
+      "category": 2,
+      "response": "No mention of figurines.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.45787620544433594
+    },
+    {
+      "question": "Would Caroline want to move back to her home country soon?",
+      "answer": "No; she's in the process of adopting children.",
+      "category": 3,
+      "response": "No, she is not moving back.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 1.024792194366455
+    },
+    {
+      "question": "What did the charity race raise awareness for?",
+      "answer": "mental health",
+      "category": 4,
+      "response": "Mental health",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.6572351455688477
+    },
+    {
+      "question": "What did Melanie realize after the charity race?",
+      "answer": "self-care is important",
+      "category": 4,
+      "response": "No relevant information found.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 1.6096718311309814
+    },
+    {
+      "question": "How does Melanie prioritize self-care?",
+      "answer": "by carving out some me-time each day for activities like running, reading, or playing the violin",
+      "category": 4,
+      "response": "By spending time with her kids.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.47731614112854004
+    },
+    {
+      "question": "What are Caroline's plans for the summer?",
+      "answer": "researching adoption agencies",
+      "category": 4,
+      "response": "Family outing or special plans.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.34000277519226074
+    },
+    {
+      "question": "What type of individuals does the adoption agency Caroline is considering support?",
+      "answer": "LGBTQ+ individuals",
+      "category": 4,
+      "response": "Children needing loving homes.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.4693782329559326
+    },
+    {
+      "question": "Why did Caroline choose the adoption agency?",
+      "answer": "because of their inclusivity and support for LGBTQ+ individuals",
+      "category": 4,
+      "response": "Caroline dreams of having a family.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.5779919624328613
+    },
+    {
+      "question": "What is Caroline excited about in the adoption process?",
+      "answer": "creating a family for kids who need one",
+      "category": 4,
+      "response": "Caroline dreams of having a family.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.5437850952148438
+    },
+    {
+      "question": "What does Melanie think about Caroline's decision to adopt?",
+      "answer": "she thinks Caroline is doing something amazing and will be an awesome mom",
+      "category": 4,
+      "response": "Melanie supports Caroline's decision.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.4272301197052002
+    },
+    {
+      "question": "How long have Mel and her husband been married?",
+      "answer": "Mel and her husband have been married for 5 years.",
+      "category": 4,
+      "response": "Since July 15, 2023.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.5920228958129883
+    },
+    {
+      "question": "What does Caroline's necklace symbolize?",
+      "answer": "love, faith, and strength",
+      "category": 4,
+      "response": "Love, faith, and strength.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.5474481582641602
+    },
+    {
+      "question": "What country is Caroline's grandma from?",
+      "answer": "Sweden",
+      "category": 4,
+      "response": "Sweden",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.4486699104309082
+    },
+    {
+      "question": "What was grandma's gift to Caroline?",
+      "answer": "necklace",
+      "category": 4,
+      "response": "A necklace from Sweden.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.5469720363616943
+    },
+    {
+      "question": "What is Melanie's hand-painted bowl a reminder of?",
+      "answer": "art and self-expression",
+      "category": 4,
+      "response": "The memories do not specify what Melanie's hand-painted bowl is a reminder of.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.9402823448181152
+    },
+    {
+      "question": "What did Melanie and her family do while camping?",
+      "answer": "explored nature, roasted marshmallows, and went on a hike",
+      "category": 4,
+      "response": "Saw the Perseid meteor shower.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.5388870239257812
+    },
+    {
+      "question": "What kind of counseling and mental health services is Caroline interested in pursuing?",
+      "answer": "working with trans people, helping them accept themselves and supporting their mental health",
+      "category": 4,
+      "response": "Counseling for adoption and mental health.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.4937260150909424
+    },
+    {
+      "question": "What workshop did Caroline attend recently?",
+      "answer": "LGBTQ+ counseling workshop",
+      "category": 4,
+      "response": "LGBTQ support group workshop.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.7796640396118164
+    },
+    {
+      "question": "What was discussed in the LGBTQ+ counseling workshop?",
+      "answer": "therapeutic methods and how to best work with trans people",
+      "category": 4,
+      "response": "Transgender stories and support.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 1.0450589656829834
+    },
+    {
+      "question": "What motivated Caroline to pursue counseling?",
+      "answer": "her own journey and the support she received, and how counseling improved her life",
+      "category": 4,
+      "response": "Empathy and understanding for others.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 1.7037513256072998
+    },
+    {
+      "question": "What kind of place does Caroline want to create for people?",
+      "answer": "a safe and inviting place for people to grow",
+      "category": 4,
+      "response": "A loving home for kids.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.546267032623291
+    },
+    {
+      "question": "Did Melanie make the black and white bowl in the photo?",
+      "answer": "Yes",
+      "category": 4,
+      "response": "No evidence of bowl mentioned.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.5832891464233398
+    },
+    {
+      "question": "What kind of books does Caroline have in her library?",
+      "answer": "kids' books - classics, stories from different cultures, educational books",
+      "category": 4,
+      "response": "Kids' books, classics, educational.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 1.1467840671539307
+    },
+    {
+      "question": "What was Melanie's favorite book from her childhood?",
+      "answer": "\"Charlotte's Web\"",
+      "category": 4,
+      "response": "No information available.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 1.1542940139770508
+    },
+    {
+      "question": "What book did Caroline recommend to Melanie?",
+      "answer": "\"Becoming Nicole\"",
+      "category": 4,
+      "response": "No specific book mentioned.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.8777289390563965
+    },
+    {
+      "question": "What did Caroline take away from the book \"Becoming Nicole\"?",
+      "answer": "Lessons on self-acceptance and finding support",
+      "category": 4,
+      "response": "No information available.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.3845682144165039
+    },
+    {
+      "question": "What are the new shoes that Melanie got used for?",
+      "answer": "Running",
+      "category": 4,
+      "response": "No information available.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.6118438243865967
+    },
+    {
+      "question": "What is Melanie's reason for getting into running?",
+      "answer": "To de-stress and clear her mind",
+      "category": 4,
+      "response": "No information available.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 1.4403729438781738
+    },
+    {
+      "question": "What does Melanie say running has been great for?",
+      "answer": "Her mental health",
+      "category": 4,
+      "response": "No mention of running.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.57464599609375
+    },
+    {
+      "question": "What did Mel and her kids make during the pottery workshop?",
+      "answer": "pots",
+      "category": 4,
+      "response": "They made something with clay.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.4978830814361572
+    },
+    {
+      "question": "What kind of pot did Mel and her kids make with clay?",
+      "answer": "a cup with a dog face on it",
+      "category": 4,
+      "response": "No specific pot mentioned.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.507227897644043
+    },
+    {
+      "question": "What creative project do Mel and her kids do together besides pottery?",
+      "answer": "painting",
+      "category": 4,
+      "response": "They make things with clay.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 4.147243022918701
+    },
+    {
+      "question": "What did Mel and her kids paint in their latest project in July 2023?",
+      "answer": "a sunset with a palm tree",
+      "category": 4,
+      "response": "They made something with clay.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.5888080596923828
+    },
+    {
+      "question": "What did Caroline see at the council meeting for adoption?",
+      "answer": "many people wanting to create loving homes for children in need",
+      "category": 4,
+      "response": "No information available.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.4990580081939697
+    },
+    {
+      "question": "What do sunflowers represent according to Caroline?",
+      "answer": "warmth and happiness",
+      "category": 4,
+      "response": "Warmth and happiness.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.5032799243927002
+    },
+    {
+      "question": "Why are flowers important to Melanie?",
+      "answer": "They remind her to appreciate the small moments and were a part of her wedding decor",
+      "category": 4,
+      "response": "No specific reason mentioned.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.4695298671722412
+    },
+    {
+      "question": "What inspired Caroline's painting for the art show?",
+      "answer": "visiting an LGBTQ center and wanting to capture unity and strength",
+      "category": 4,
+      "response": "The LGBTQ support group.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.4945030212402344
+    },
+    {
+      "question": "How often does Melanie go to the beach with her kids?",
+      "answer": "once or twice a year",
+      "category": 4,
+      "response": "Once or twice a year.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 1.240102767944336
+    },
+    {
+      "question": "What did Melanie and her family see during their camping trip last year?",
+      "answer": "Perseid meteor shower",
+      "category": 4,
+      "response": "Perseid meteor shower.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.716238260269165
+    },
+    {
+      "question": "How did Melanie feel while watching the meteor shower?",
+      "answer": "in awe of the universe",
+      "category": 4,
+      "response": "Melanie felt amazing and at one with the universe.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.7441730499267578
+    },
+    {
+      "question": "Whose birthday did Melanie celebrate recently?",
+      "answer": "Melanie's daughter",
+      "category": 4,
+      "response": "Melanie celebrated her partner's birthday.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.5983550548553467
+    },
+    {
+      "question": "Who performed at the concert at Melanie's daughter's birthday?",
+      "answer": "Matt Patterson",
+      "category": 4,
+      "response": "Not mentioned in memories.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.8010661602020264
+    },
+    {
+      "question": "Why did Melanie choose to use colors and patterns in her pottery project?",
+      "answer": "She wanted to catch the eye and make people smile.",
+      "category": 4,
+      "response": "The memories do not provide a specific reason for Melanie's choice of colors and patterns in her pottery project.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 1.0658743381500244
+    },
+    {
+      "question": "What pet does Caroline have?",
+      "answer": "guinea pig",
+      "category": 4,
+      "response": "Caroline has no pets mentioned.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.653419017791748
+    },
+    {
+      "question": "What pets does Melanie have?",
+      "answer": "Two cats and a dog",
+      "category": 4,
+      "response": "A pup and a kitty.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.576237678527832
+    },
+    {
+      "question": "Where did Oliver hide his bone once?",
+      "answer": "In Melanie's slipper",
+      "category": 4,
+      "response": "In Melanie's slipper.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.5779008865356445
+    },
+    {
+      "question": "What activity did Caroline used to do with her dad?",
+      "answer": "Horseback riding",
+      "category": 4,
+      "response": "Horseback riding",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 1.0884668827056885
+    },
+    {
+      "question": "What did Caroline make for a local church?",
+      "answer": "a stained glass window",
+      "category": 4,
+      "response": "No information available.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 1.8476111888885498
+    },
+    {
+      "question": "What did Caroline find in her neighborhood during her walk?",
+      "answer": "a rainbow sidewalk",
+      "category": 4,
+      "response": "No relevant information found.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 1.6483421325683594
+    },
+    {
+      "question": "Which song motivates Caroline to be courageous?",
+      "answer": "Brave by Sara Bareilles",
+      "category": 4,
+      "response": "\"Brave\" by Sara Bareilles",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.9919030666351318
+    },
+    {
+      "question": "Which  classical musicians does Melanie enjoy listening to?",
+      "answer": "Bach and Mozart",
+      "category": 4,
+      "response": "No specific classical musicians mentioned.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 2.0758399963378906
+    },
+    {
+      "question": "Who is Melanie a fan of in terms of modern music?",
+      "answer": "Ed Sheeran",
+      "category": 4,
+      "response": "No specific artist mentioned.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 1.0611851215362549
+    },
+    {
+      "question": "How long has Melanie been creating art?",
+      "answer": "7 years",
+      "category": 4,
+      "response": "Since 15 July, 2023.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.5660851001739502
+    },
+    {
+      "question": "What precautionary sign did Melanie see at the caf\u00e9?",
+      "answer": "A sign stating that someone is not being able to leave",
+      "category": 4,
+      "response": "No relevant information found.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.7258002758026123
+    },
+    {
+      "question": "What advice does Caroline give for getting started with adoption?",
+      "answer": "Do research, find an adoption agency or lawyer, gather necessary documents, and prepare emotionally.",
+      "category": 4,
+      "response": "No specific advice mentioned.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 1.7441048622131348
+    },
+    {
+      "question": "What setback did Melanie face in October 2023?",
+      "answer": "She got hurt and had to take a break from pottery.",
+      "category": 4,
+      "response": "No specific setback mentioned.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.6656162738800049
+    },
+    {
+      "question": "What does Melanie do to keep herself busy during her pottery break?",
+      "answer": "Read a book and paint.",
+      "category": 4,
+      "response": "She spends time with her kids.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.9090781211853027
+    },
+    {
+      "question": "What painting did Melanie show to Caroline on October 13, 2023?",
+      "answer": "A painting inspired by sunsets with a pink sky.",
+      "category": 4,
+      "response": "No specific painting mentioned.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 1.3330450057983398
+    },
+    {
+      "question": "What kind of painting did Caroline share with Melanie on October 13, 2023?",
+      "answer": "An abstract painting with blue streaks on a wall.",
+      "category": 4,
+      "response": "No painting shared on October 13, 2023.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 2.2655580043792725
+    },
+    {
+      "question": "What was the poetry reading that Caroline attended about?",
+      "answer": "It was a transgender poetry reading where transgender people shared their stories.",
+      "category": 4,
+      "response": "No information available.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.7247388362884521
+    },
+    {
+      "question": "What did the posters at the poetry reading say?",
+      "answer": "\"Trans Lives Matter\"",
+      "category": 4,
+      "response": "No information available.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.5130100250244141
+    },
+    {
+      "question": "What does Caroline's drawing symbolize for her?",
+      "answer": "Freedom and being true to herself.",
+      "category": 4,
+      "response": "Courage and strength of the trans community.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.36757993698120117
+    },
+    {
+      "question": "How do Melanie and Caroline describe their journey through life together?",
+      "answer": "An ongoing adventure of learning and growing.",
+      "category": 4,
+      "response": "Supportive and inspiring experiences.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.4867839813232422
+    },
+    {
+      "question": "What happened to Melanie's son on their road trip?",
+      "answer": "He got into an accident",
+      "category": 4,
+      "response": "No information available.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.5557701587677002
+    },
+    {
+      "question": "How did Melanie's son handle the accident?",
+      "answer": "He was scared but reassured by his family",
+      "category": 4,
+      "response": "Melanie's son is okay.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.5744869709014893
+    },
+    {
+      "question": "How did Melanie feel about her family after the accident?",
+      "answer": "They are important and mean the world to her",
+      "category": 4,
+      "response": "Thankful her son is okay.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 1.0180292129516602
+    },
+    {
+      "question": "How did Melanie's children handle the accident?",
+      "answer": "They were scared but resilient",
+      "category": 4,
+      "response": "No information about the accident.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 1.5442049503326416
+    },
+    {
+      "question": "How did Melanie feel after the accident?",
+      "answer": "Grateful and thankful for her family",
+      "category": 4,
+      "response": "Thankful her son is okay.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.5323491096496582
+    },
+    {
+      "question": "What was Melanie's reaction to her children enjoying the Grand Canyon?",
+      "answer": "She was happy and thankful",
+      "category": 4,
+      "response": "No mention of Grand Canyon.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.9937539100646973
+    },
+    {
+      "question": "What do Melanie's family give her?",
+      "answer": "Strength and motivation",
+      "category": 4,
+      "response": "Melanie's family gives her love.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 2.0605618953704834
+    },
+    {
+      "question": "How did Melanie feel about her family supporting her?",
+      "answer": "She appreciated them a lot",
+      "category": 4,
+      "response": "Melanie felt grateful and happy.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.9668989181518555
+    },
+    {
+      "question": "What did Melanie do after the road trip to relax?",
+      "answer": "Went on a nature walk or hike",
+      "category": 4,
+      "response": "Melanie played clarinet to relax.",
+      "num_speaker_a_retrieved": 23,
+      "num_speaker_b_retrieved": 16,
+      "response_time": 0.525676965713501
+    }
+  ],
+  "1": [
+    {
+      "question": "When Jon has lost his job as a banker?",
+      "answer": "19 January, 2023",
+      "category": 2,
+      "response": "19 January, 2023",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.6502721309661865
+    },
+    {
+      "question": "When Gina has lost her job at Door Dash?",
+      "answer": "January, 2023",
+      "category": 2,
+      "response": "January 2023",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 1.049548864364624
+    },
+    {
+      "question": "How do Jon and Gina both like to destress?",
+      "answer": "by dancing",
+      "category": 4,
+      "response": "Dancing and creative expression.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.7392199039459229
+    },
+    {
+      "question": "What do Jon and Gina both have in common?",
+      "answer": "They lost their jobs and decided to start their own businesses.",
+      "category": 1,
+      "response": "Both are starting their own businesses.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.5349991321563721
+    },
+    {
+      "question": "Why did Jon decide to start his dance studio?",
+      "answer": "He lost his job and decided to start his own business to share his passion.",
+      "category": 4,
+      "response": "To share his passion for dancing.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.5362412929534912
+    },
+    {
+      "question": "What Jon thinks the ideal dance studio should look like?",
+      "answer": "By the water, with natural light and Marley flooring",
+      "category": 1,
+      "response": "Jon hasn't explicitly described the ideal dance studio's appearance.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 1.1841001510620117
+    },
+    {
+      "question": "When is Jon's group performing at a festival?",
+      "answer": "February, 2023",
+      "category": 2,
+      "response": "No specific date mentioned.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.6885218620300293
+    },
+    {
+      "question": "When did Gina launch an ad campaign for her store?",
+      "answer": "29 January, 2023",
+      "category": 2,
+      "response": "No information available.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.47429585456848145
+    },
+    {
+      "question": "When was Jon in Paris?",
+      "answer": "28 January 2023",
+      "category": 2,
+      "response": "No memories mention Jon in Paris.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 1.0897300243377686
+    },
+    {
+      "question": "Which city have both Jean and John visited?",
+      "answer": "Rome",
+      "category": 1,
+      "response": "No city mentioned.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.46497201919555664
+    },
+    {
+      "question": "When did Gina team up with a local artist for some cool designs?",
+      "answer": "February, 2023",
+      "category": 2,
+      "response": "No evidence found.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.7143611907958984
+    },
+    {
+      "question": "When did Gina get her tattoo?",
+      "answer": "A few years ago",
+      "category": 2,
+      "response": "8 February, 2023",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.4943249225616455
+    },
+    {
+      "question": "When did Jon start to go to the gym?",
+      "answer": "March, 2023",
+      "category": 2,
+      "response": "No mention of gym in memories.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.6155068874359131
+    },
+    {
+      "question": "When did Gina open her online clothing store?",
+      "answer": "16 March, 2023",
+      "category": 2,
+      "response": "Gina opened her store last week.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 1.490912675857544
+    },
+    {
+      "question": "When did Jon start expanding his studio's social media presence?",
+      "answer": "April, 2023",
+      "category": 2,
+      "response": "No specific date mentioned.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.6600971221923828
+    },
+    {
+      "question": "When did Jon host a dance competition?",
+      "answer": "May, 2023",
+      "category": 2,
+      "response": "No evidence of a dance competition.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.5728168487548828
+    },
+    {
+      "question": "When did Jon go to a fair to get more exposure for his dance studio?",
+      "answer": "24 April, 2023",
+      "category": 2,
+      "response": "No evidence of a fair.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.442410945892334
+    },
+    {
+      "question": "Why did Gina decide to start her own clothing store?",
+      "answer": "She always loved fashion trends and finding unique pieces and she lost her job so decided it was time to start her own business.",
+      "category": 1,
+      "response": "To keep up with fashion trends.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.5035550594329834
+    },
+    {
+      "question": "Do Jon and Gina start businesses out of what they love?",
+      "answer": "Yes",
+      "category": 1,
+      "response": "Yes, they both do.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.5082998275756836
+    },
+    {
+      "question": "When did Gina interview for a design internship?",
+      "answer": "10 May, 2023",
+      "category": 2,
+      "response": "No evidence found.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.4426560401916504
+    },
+    {
+      "question": "When did Gina get accepted for the design internship?",
+      "answer": "27 May, 2023",
+      "category": 2,
+      "response": "No information available.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.8987810611724854
+    },
+    {
+      "question": "When did Jon start reading \"The Lean Startup\"?",
+      "answer": "May, 2023",
+      "category": 2,
+      "response": "27 May, 2023",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.4185779094696045
+    },
+    {
+      "question": "When did Gina develop a video presentation to teach how to style her fashion pieces? ",
+      "answer": "June, 2023",
+      "category": 2,
+      "response": "No evidence found.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.5430891513824463
+    },
+    {
+      "question": "How did Gina promote her clothes store?",
+      "answer": "worked with an artist to make unique fashion pieces, made limited-edition sweatshirts, got some new offers and promotions for online store, developed a video presentation showing how to style her pieces",
+      "category": 1,
+      "response": "By keeping up with fashion trends.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.7371988296508789
+    },
+    {
+      "question": "Which events has Jon participated in to promote his business venture?",
+      "answer": "fair, networking events, dance competition",
+      "category": 1,
+      "response": "Networking events.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.4518001079559326
+    },
+    {
+      "question": "What does Jon's dance studio offer?",
+      "answer": "one-on-one metoring and training to dancers,  workshops and classes to local schools and centers",
+      "category": 1,
+      "response": "Dance lessons and joy.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.6606779098510742
+    },
+    {
+      "question": "When did Jon receive mentorship to promote his venture?",
+      "answer": "15 June, 2023",
+      "category": 2,
+      "response": "No evidence of mentorship found.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.6336090564727783
+    },
+    {
+      "question": "Did Jon and Gina both participate in dance competitions?",
+      "answer": "Yes",
+      "category": 1,
+      "response": "No, only Gina did.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.6017436981201172
+    },
+    {
+      "question": "When was Jon in Rome?",
+      "answer": "June 2023",
+      "category": 2,
+      "response": "No mention of Jon in Rome.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.5101771354675293
+    },
+    {
+      "question": "Which cities has Jon visited?",
+      "answer": "Paris, Rome",
+      "category": 1,
+      "response": "No cities mentioned.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.6134331226348877
+    },
+    {
+      "question": "When Jon is planning to open his dance studio?",
+      "answer": "20 June, 2023",
+      "category": 2,
+      "response": "No specific date mentioned.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.5379621982574463
+    },
+    {
+      "question": "How long did it take for Jon to open his studio?",
+      "answer": "six months",
+      "category": 1,
+      "response": "Not specified in memories.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.4462010860443115
+    },
+    {
+      "question": "When did Gina design a limited collection of hoodies?",
+      "answer": "June 2023",
+      "category": 2,
+      "response": "21 June 2023",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.5145642757415771
+    },
+    {
+      "question": "When did Jon visit networking events for his store?",
+      "answer": "20 June, 2023",
+      "category": 2,
+      "response": "21 July, 2023",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.5099010467529297
+    },
+    {
+      "question": "When did Gina start being recognized by fashion editors?",
+      "answer": "July 2023",
+      "category": 2,
+      "response": "No information available.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.46607303619384766
+    },
+    {
+      "question": "When did Jon start learning marketing and analytics tools?",
+      "answer": "July, 2023",
+      "category": 2,
+      "response": "No evidence found.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 1.792118787765503
+    },
+    {
+      "question": "When did Jon and Gina decide to collaborate to create dance content?",
+      "answer": "21 July 2023",
+      "category": 2,
+      "response": "No collaboration mentioned.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.6023590564727783
+    },
+    {
+      "question": "When did Gina mention Shia Labeouf?",
+      "answer": " 23 July, 2023",
+      "category": 2,
+      "response": "23 July, 2023",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 1.191789150238037
+    },
+    {
+      "question": "When did Gina go to a dance class with a group of friends?",
+      "answer": "21 July 2023",
+      "category": 2,
+      "response": "No evidence found.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.5599339008331299
+    },
+    {
+      "question": "What is Gina's favorite style of dance?",
+      "answer": "Contemporary",
+      "category": 4,
+      "response": "Not mentioned in memories.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.6895847320556641
+    },
+    {
+      "question": "What is Jon's favorite style of dance?",
+      "answer": "Contemporary",
+      "category": 4,
+      "response": "The memories do not specify Jon's favorite style of dance.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.8884429931640625
+    },
+    {
+      "question": "What was Gina's favorite dancing memory?",
+      "answer": "Winning first place at a regionals dance competition",
+      "category": 4,
+      "response": "Winning first place at regionals.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.5695478916168213
+    },
+    {
+      "question": "What kind of dance piece did Gina's team perform to win first place?",
+      "answer": "\"Finding Freedom\"",
+      "category": 4,
+      "response": "\"Finding Freedom\"",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.6158781051635742
+    },
+    {
+      "question": "What do the dancers in the photo represent?",
+      "answer": "They are performing at the festival",
+      "category": 4,
+      "response": "Grace and skill.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 1.178673267364502
+    },
+    {
+      "question": "What does Gina say about the dancers in the photo?",
+      "answer": "They look graceful",
+      "category": 4,
+      "response": "They're graceful!",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.8124799728393555
+    },
+    {
+      "question": "What is Jon's attitude towards being part of the dance festival?",
+      "answer": "Glad",
+      "category": 4,
+      "response": "Jon is supportive and optimistic.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.4725680351257324
+    },
+    {
+      "question": "What kind of flooring is Jon looking for in his dance studio?",
+      "answer": "Marley flooring",
+      "category": 4,
+      "response": "Marley flooring",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.5024068355560303
+    },
+    {
+      "question": "What did Gina find for her clothing store on 1 February, 2023?",
+      "answer": "The perfect spot for her store",
+      "category": 4,
+      "response": "Gina designed a cozy space.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.612739086151123
+    },
+    {
+      "question": "What did Gina design for her store?",
+      "answer": "the space, furniture, and decor",
+      "category": 4,
+      "response": "A cozy and inviting space.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.6900739669799805
+    },
+    {
+      "question": "What did Gina want her customers to feel in her store?",
+      "answer": "cozy and comfortable",
+      "category": 4,
+      "response": "Cozy and inviting atmosphere.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.47304701805114746
+    },
+    {
+      "question": "What did Jon say about Gina's progress with her store?",
+      "answer": "hard work's paying off",
+      "category": 4,
+      "response": "Jon said, \"Store's going good.\"",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.643834114074707
+    },
+    {
+      "question": "What made Gina choose the furniture and decor for her store?",
+      "answer": "personal style and customer comfort",
+      "category": 4,
+      "response": "Not mentioned in memories.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.66487717628479
+    },
+    {
+      "question": "What did Jon say about creating a special experience for customers?",
+      "answer": "It's the key to making them feel welcome and coming back",
+      "category": 4,
+      "response": "\"Let them know you care.\"",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.510775089263916
+    },
+    {
+      "question": "What did Gina say about creating an experience for her customers?",
+      "answer": "making them want to come back",
+      "category": 4,
+      "response": "Gina did not mention creating an experience for her customers.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.7649400234222412
+    },
+    {
+      "question": "How is Gina's store doing?",
+      "answer": "The store is doing great.",
+      "category": 4,
+      "response": "Gina's store is doing good.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.5329909324645996
+    },
+    {
+      "question": "What does Gina's tattoo symbolize?",
+      "answer": "Freedom and expressing herself through dance",
+      "category": 4,
+      "response": "Positive reminder during tough times.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 1.24399995803833
+    },
+    {
+      "question": "What did Jon and Gina compare their entrepreneurial journeys to?",
+      "answer": "dancing together and supporting each other",
+      "category": 4,
+      "response": "Dancing and fashion trends.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 1.0039269924163818
+    },
+    {
+      "question": "What advice does Gina give to Jon about running a successful business?",
+      "answer": "build relationships with customers, create a strong brand image, stay positive",
+      "category": 4,
+      "response": "Keep up with fashion trends.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.4782559871673584
+    },
+    {
+      "question": "Why did Jon shut down his bank account?",
+      "answer": "for his business",
+      "category": 4,
+      "response": "No information available.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.7987709045410156
+    },
+    {
+      "question": "Why did Gina combine her clothing business with dance?",
+      "answer": "she is passionate about dance and fashion",
+      "category": 4,
+      "response": "No evidence found in memories.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 1.0964579582214355
+    },
+    {
+      "question": "What does Jon's dance make him?",
+      "answer": "happy",
+      "category": 4,
+      "response": "Jon's dance makes him passionate.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.5982401371002197
+    },
+    {
+      "question": "What did Gina receive from a dance contest?",
+      "answer": "a trophy",
+      "category": 4,
+      "response": "First place at regionals.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.5487091541290283
+    },
+    {
+      "question": "How does Gina stay confident in her business?",
+      "answer": "By reminding herself of her successes and progress, having a support system, and focusing on why she started",
+      "category": 4,
+      "response": "Gina keeps up with fashion trends.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 1.7289838790893555
+    },
+    {
+      "question": "What kind of professional experience did Gina get accepted for on May 23, 2023?",
+      "answer": "fashion internship",
+      "category": 4,
+      "response": "No relevant information found.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 1.690412998199463
+    },
+    {
+      "question": "Where is Gina's fashion internship?",
+      "answer": "fashion department of an international company",
+      "category": 4,
+      "response": "No information available.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.740807056427002
+    },
+    {
+      "question": "What book is Jon currently reading?",
+      "answer": "The Lean Startup",
+      "category": 4,
+      "response": "\"The Lean Startup\"",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 1.006289005279541
+    },
+    {
+      "question": "What is Jon offering to the dancers at his dance studio?",
+      "answer": "One-on-one mentoring and training",
+      "category": 4,
+      "response": "Dance lessons and joy.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 1.1726889610290527
+    },
+    {
+      "question": "How does Jon use the clipboard with a notepad attached to it?",
+      "answer": "To set goals, track achievements, and find areas for improvement",
+      "category": 4,
+      "response": "No mention of clipboard usage.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 1.1777048110961914
+    },
+    {
+      "question": "What does Jon tell Gina he won't do?",
+      "answer": "quit",
+      "category": 4,
+      "response": "Underestimate the difficulties.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 1.6906449794769287
+    },
+    {
+      "question": "What did Jon take a trip to Rome for?",
+      "answer": "To clear his mind",
+      "category": 4,
+      "response": "No evidence of a trip to Rome.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 1.0599820613861084
+    },
+    {
+      "question": "What is Jon working on opening?",
+      "answer": "a dance studio",
+      "category": 4,
+      "response": "Dance studio",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.8219089508056641
+    },
+    {
+      "question": "How does Gina describe the studio that Jon has opened?",
+      "answer": "amazing",
+      "category": 4,
+      "response": "Cozy and inviting space.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 1.0784010887145996
+    },
+    {
+      "question": "How does Jon feel about the opening night of his dance studio?",
+      "answer": "excited",
+      "category": 4,
+      "response": "Not mentioned in memories.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 1.0463809967041016
+    },
+    {
+      "question": "How does Gina describe the feeling that dance brings?",
+      "answer": "magical",
+      "category": 4,
+      "response": "Gina describes it as being ourselves.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 1.0361080169677734
+    },
+    {
+      "question": "What does Jon plan to do at the grand opening of his dance studio?",
+      "answer": "savor all the good vibes",
+      "category": 4,
+      "response": "Teach others the joy of dancing.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.47776007652282715
+    },
+    {
+      "question": "What does Gina say to Jon about the grand opening?",
+      "answer": "Let's live it up and make some great memories",
+      "category": 4,
+      "response": "Gina doesn't mention the grand opening.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 1.715156078338623
+    },
+    {
+      "question": "What is the general sentiment about the upcoming grand opening?",
+      "answer": "excitement",
+      "category": 4,
+      "response": "Positive and encouraging.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.5322129726409912
+    },
+    {
+      "question": "What did Gina make a limited edition line of?",
+      "answer": "Hoodies",
+      "category": 4,
+      "response": "Hoodies",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.5624349117279053
+    },
+    {
+      "question": "According to Gina, what makes Jon a perfect mentor and guide?",
+      "answer": "His positivity and determination",
+      "category": 4,
+      "response": "Gina finds Jon's dedication inspiring.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 0.6157979965209961
+    },
+    {
+      "question": "What plans does Jon have after receiving advice at the networking event?",
+      "answer": "Sprucing up his business plan, tweaking his pitch to investors, and working on an online platform.",
+      "category": 4,
+      "response": "Starting a dance studio.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 1.6340839862823486
+    },
+    {
+      "question": "What offer does Gina make to Jon regarding social media?",
+      "answer": "Helping with making content and managing his social media accounts.",
+      "category": 4,
+      "response": "The memories do not contain any information about Gina making an offer to Jon regarding social media.",
+      "num_speaker_a_retrieved": 16,
+      "num_speaker_b_retrieved": 14,
+      "response_time": 1.8388700485229492
+    }
+  ],
+  "gate_info": {
+    "0": {
+      "speaker_a": {
+        "total_seen": 211,
+        "total_stored": 23,
+        "compression_ratio": 0.8909952606635071,
+        "mean_surprise": 0.2957350237392136
+      },
+      "speaker_b": {
+        "total_seen": 208,
+        "total_stored": 16,
+        "compression_ratio": 0.9230769230769231,
+        "mean_surprise": 0.2995862734432404
+      }
+    },
+    "1": {
+      "speaker_a": {
+        "total_seen": 185,
+        "total_stored": 16,
+        "compression_ratio": 0.9135135135135135,
+        "mean_surprise": 0.2820908337026029
+      },
+      "speaker_b": {
+        "total_seen": 184,
+        "total_stored": 14,
+        "compression_ratio": 0.9239130434782609,
+        "mean_surprise": 0.2939051661802375
+      }
+    }
+  }
+}

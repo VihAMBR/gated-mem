@@ -8,7 +8,7 @@ We evaluate all experiments on the [LoCoMo benchmark](https://github.com/memodb-
 
 ```bash
 # Clone and install
-git clone https://github.com/yourusername/gated-mem.git
+git clone https://github.com/VihAMBR/gated-mem.git
 cd gated-mem
 pip install -r requirements.txt
 
@@ -17,9 +17,14 @@ cp .env.example .env
 # Edit .env and add your OpenAI API key
 ```
 
+```bash
+# Download spaCy model (needed for enhanced gated experiments)
+python -m spacy download en_core_web_sm
+```
+
 **Requirements:** Python 3.10+, an OpenAI API key (for GPT-4o-mini).
 
-The embedding model (`all-MiniLM-L6-v2`) downloads automatically on first run (~80MB).
+The embedding model (`all-MiniLM-L6-v2`) downloads automatically on first run (~80MB). The spaCy model (`en_core_web_sm`) must be downloaded manually (see above).
 
 ## Quick Start
 
@@ -157,11 +162,74 @@ This means speaker A said 211 things, but only 88 were surprising enough to keep
 
 ---
 
-### Experiment 3: Threshold Sweep
+### Experiment 3: Enhanced Gated Memory
+
+**Question:** Can we recover temporal question accuracy (destroyed by pure surprise-gating) while keeping the storage savings?
+
+**How it works:**
+
+Same surprise-gating pipeline, but with two bypass mechanisms that let critical messages skip the gate:
+
+1. **Temporal bypass** — A regex-based detector catches date patterns (`May 7, 2023`, `last Monday`, `three months ago`), time expressions (`at 3pm`, `in the morning`), and temporal keywords (`started`, `began`, `moved`, `changed`, `recently`, `just`, `ago`, `since`). Any message triggering the detector is stored unconditionally.
+
+2. **Entity novelty bypass** — spaCy's `en_core_web_sm` model extracts named entities (PERSON, ORG, GPE, LOC, etc.) per speaker. A running set of seen entities is maintained. When a message introduces an entity that speaker hasn't mentioned before, it's stored regardless of surprise score.
+
+The storage decision becomes:
+
+```
+store = (surprise > threshold) OR has_temporal_markers OR has_novel_entities
+```
+
+Every stored memory is a `MemoryRecord` with metadata fields for future experiments:
+- `retrieval_weight` (1.0), `retrieval_count` (0), `last_retrieved` (null)
+- `associations` (empty), `inhibited_by` (null), `inhibition_weight` (0.0)
+- `created_at`, `surprise_score`, `temporal_salience`, `entity_novelty`
+
+Retrieval uses weighted scoring: `cosine_similarity * retrieval_weight * (1 - inhibition_weight)`. Since weights are initialized to neutral values, this is currently equivalent to raw cosine — but the plumbing is ready for decay, interference, and consolidation experiments.
+
+**Run:**
+
+```bash
+python run_experiment.py enhanced_gated \
+    --threshold 0.2 \
+    --mode fixed \
+    --metric nearest_neighbor \
+    --max_convs 2
+```
+
+**Expected output:** `results/enhanced_t{threshold}_{mode}_{metric}.json` and `_evals.json`
+
+**Key files:**
+- `enhanced_gated_encoder.py` — `EnhancedGatedEncoder`, `TemporalDetector`, `EntityTracker`, `MemoryRecord`
+- `run_enhanced_gated.py` — `EnhancedMemorySystem` with weighted retrieval
+
+**Parameters:**
+
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `--threshold` | 0.3 | Surprise cutoff (same as Experiment 2) |
+| `--mode` | `fixed` | `fixed` or `adaptive` |
+| `--metric` | `nearest_neighbor` | `nearest_neighbor` or `centroid` |
+| `--warmup` | 3 | Always store first N messages |
+| `--top_k` | 30 | Memories retrieved per query |
+| `--max_convs` | None | Limit conversations |
+
+**What the gate output looks like:**
+
+```
+Gate A: 143/211 stored (32% compressed) — surprise=102, temporal=46, entity=21, warmup=3
+Gate B: 133/208 stored (36% compressed) — surprise=113, temporal=37, entity=20, warmup=3
+```
+
+This shows the bypass breakdown: of 143 stored messages for speaker A, 102 passed the surprise gate, 46 were saved by temporal detection, and 21 by entity novelty (categories overlap — a message can trigger multiple pathways).
+
+---
+
+### Experiment 4: Threshold Sweep
 
 **Question:** How does retrieval quality degrade as we increase the surprise threshold (store less)?
 
-This is a batch runner that executes Experiment 2 across multiple configurations and produces a comparison table.
+This is a batch runner that executes the surprise-gated experiment across multiple configurations and produces a comparison table.
 
 **Run:**
 
@@ -192,7 +260,7 @@ python run_experiment.py threshold_sweep --quick --max_convs 2
 
 ---
 
-### Experiment 4: Compare
+### Experiment 5: Compare
 
 **Question:** How do all completed experiments compare to each other?
 
@@ -206,21 +274,27 @@ No API calls — this just reads existing result files.
 
 ---
 
-## Results (2-conversation subset)
+## Results (Full 10-conversation LoCoMo benchmark, 1540 questions)
 
-| Config | Compression | LLM Score | vs Baseline |
-|--------|------------|-----------|-------------|
-| Naive Baseline | 0% | **66.1%** | — |
-| t=0.2 fixed NN | 48.2% | 56.2% | -14.9% |
-| t=0.3 fixed NN | 78.4% | 37.8% | -42.8% |
-| t=0.4 fixed NN | 91.2% | 28.8% | -56.5% |
-| t=0.5 adaptive NN | 58.0% | 52.8% | -20.1% |
+| Config | Memories | Compression | Overall | Single-hop | Temporal | Multi-hop | Open-domain | vs Baseline |
+|--------|----------|------------|---------|------------|----------|-----------|-------------|-------------|
+| Naive Baseline | 5882/5882 | 0% | **62.0%** | 54.3% | 60.7% | 44.8% | 67.1% | — |
+| Surprise t=0.2 | 3808/5882 | 35.3% | 57.9% | 55.3% | 49.8% | 43.8% | 63.5% | -4.1% |
+| **Enhanced t=0.2** | **3700/5314** | **30.4%** | **61.6%** | **57.1%** | **59.5%** | **44.8%** | **65.9%** | **-0.4%** |
 
 **Key findings:**
-- The quality/compression tradeoff is steep. At t=0.2, we store half the messages but lose ~15% accuracy.
-- **Temporal questions are hit hardest** (74.6% → 17.5% at t=0.4). Routine daily updates with timestamps get filtered as "not surprising," but temporal questions depend on exactly those updates.
-- **Multi-hop questions are surprisingly robust** (61.5% across all configs). Distinctive facts that multi-hop questions need are inherently "surprising" enough to pass the gate.
-- **Adaptive thresholding** lands between t=0.2 and t=0.3 in both compression and quality — a reasonable middle ground but doesn't outperform a well-tuned fixed threshold.
+
+- **Enhanced gating matches the baseline while storing 30% less data.** The temporal and entity bypasses recover the information that pure surprise-gating destroys. At 61.6% vs 62.0%, the difference is 0.4% — within noise on 1540 questions.
+
+- **Temporal questions nearly fully recovered** (49.8% → 59.5%, vs baseline 60.7%). Pure surprise-gating at t=0.2 dropped temporal by 11 points because routine timestamped updates look "unsurprising." The temporal bypass reclaims most of that loss.
+
+- **Single-hop actually improves** (54.3% → 57.1%). The entity novelty bypass captures factual mentions that single-hop questions target, which pure cosine similarity sometimes misses.
+
+- **Multi-hop holds steady** at 44.8%, exactly matching baseline. Distinctive facts that multi-hop questions chain together are inherently "surprising" enough to pass the gate even without bypasses.
+
+- **The quality/compression tradeoff is steep for pure surprise-gating** (57.9% at 35% compression). But the enhanced approach breaks this tradeoff — it compresses 30% while losing only 0.4% quality, compared to 4.1% loss from pure surprise gating at similar compression.
+
+- **Bypass breakdown across all conversations**: 965 messages saved by temporal detection, 463 by entity novelty (out of ~5300 total messages). These bypasses are why the enhanced encoder recovers temporal and single-hop accuracy without sacrificing compression.
 
 ---
 
@@ -228,21 +302,23 @@ No API calls — this just reads existing result files.
 
 ```
 gated-mem/
-├── run_experiment.py          # Unified entry point for all experiments
-├── run_naive_baseline.py      # Experiment 1: naive baseline system
-├── run_gated_baseline.py      # Experiment 2: surprise-gated system
-├── surprise_gated_encoder.py  # Core: SurpriseGatedEncoder class
-├── evals.py                   # Evaluation pipeline (BLEU + F1 + LLM judge)
-├── generate_scores.py         # Per-category score aggregation
-├── analyze_results.py         # Cross-experiment comparison table
-├── test_quick.py              # 5-question smoke test
-├── prompts.py                 # Prompt variants (Mem0, graph, Zep)
+├── run_experiment.py            # Unified entry point for all experiments
+├── run_naive_baseline.py        # Experiment 1: naive baseline system
+├── run_gated_baseline.py        # Experiment 2: surprise-gated system
+├── run_enhanced_gated.py        # Experiment 3: enhanced gated system
+├── surprise_gated_encoder.py    # Core: SurpriseGatedEncoder class
+├── enhanced_gated_encoder.py    # Enhanced: temporal bypass + entity novelty + MemoryRecord
+├── evals.py                     # Evaluation pipeline (BLEU + F1 + LLM judge)
+├── generate_scores.py           # Per-category score aggregation
+├── analyze_results.py           # Cross-experiment comparison table
+├── test_quick.py                # 5-question smoke test
+├── prompts.py                   # Prompt variants (Mem0, graph, Zep)
 ├── metrics/
-│   ├── llm_judge.py           # GPT-4o-mini judge (CORRECT/WRONG)
-│   └── utils.py               # BLEU, F1 calculations
+│   ├── llm_judge.py             # GPT-4o-mini judge (CORRECT/WRONG)
+│   └── utils.py                 # BLEU, F1 calculations
 ├── dataset/
-│   └── locomo10.json          # LoCoMo benchmark (10 conversations)
-├── results/                   # Output directory (gitignored)
+│   └── locomo10.json            # LoCoMo benchmark (10 conversations)
+├── results/                     # Benchmark results (committed)
 ├── requirements.txt
 ├── .env.example
 └── .gitignore
@@ -260,6 +336,11 @@ dataset/locomo10.json
          │         │                                              │
          │         └── surprise_gated_encoder.py                  │
          │              (filter by novelty)                        │
+         │                                                        │
+         ├──► run_enhanced_gated.py ──────────────────────► results/enhanced_*.json
+         │         │                                              │
+         │         └── enhanced_gated_encoder.py                  │
+         │              (surprise + temporal + entity)             │
          │                                                        ▼
          │                                                   evals.py
          │                                              (BLEU + F1 + LLM Judge)

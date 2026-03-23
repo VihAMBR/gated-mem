@@ -2,7 +2,7 @@
 
 An experimental investigation into memory systems for conversational AI agents. This project started as an attempt to build a biologically-inspired "neuroplastic" memory system, and became an honest accounting of what matters and what doesn't when an LLM needs to remember past conversations.
 
-**The headline finding:** After weeks of engineering increasingly sophisticated encoding, retrieval, and memory reorganization systems, the single biggest improvement came from changing the **answer prompt**. Adding chain-of-thought reasoning to a naive RAG baseline jumped accuracy from 72.4% to **83.3% on LongMemEval** (+13.3%), beating GPT-4o with full context (60-64%) and surpassing funded startups. The bottleneck was never the memory system — it was how the LLM processed the retrieved context.
+**The headline finding:** After weeks of engineering increasingly sophisticated encoding, retrieval, and memory reorganization systems, the single biggest improvement came from changing the **answer prompt**. Adding chain-of-thought reasoning to a naive RAG baseline jumped accuracy from 72.3% to **78.2% on LongMemEval** (+5.8% on all 500 instances), with a **+40 percentage point** gain on preference questions. The bottleneck was never the memory system — it was how the LLM processed the retrieved context.
 
 ---
 
@@ -136,17 +136,15 @@ After four phases of engineering encoding, retrieval, and memory reorganization,
 5. If asking about preferences, infer from behavior and stated opinions
 6. Give final answer
 
-**Results (apples-to-apples, same 30 questions):**
+**Results (full 500-instance LongMemEval):**
 
 | System | Overall | Multi-session | Preferences | Temporal | Knowledge-update |
 |--------|---------|---------------|-------------|----------|-----------------|
-| Naive baseline | 70.0% | 75.0% | 50.0% | 50.0% | 50.0% |
-| **Naive + CoT prompt** | **83.3%** | **87.5%** | **100%** | **62.5%** | **75.0%** |
-| Delta | **+13.3%** | +12.5% | +50.0% | +12.5% | +25.0% |
+| Naive baseline | 72.3% | 54.9% | 36.7% | 67.7% | 84.6% |
+| **Naive + CoT prompt** | **78.2%** | **63.2%** | **76.7%** | **72.2%** | 84.6% |
+| Delta | **+5.8%** | **+8.3%** | **+40.0%** | +4.5% | +0.0% |
 
-*N=30 on a stratified subset; IE categories already saturated at 100%.*
-
-This is by far the most impactful change in the entire project. No encoding changes. No retrieval changes. No new models. Just a better prompt that forces the LLM to show its reasoning before answering.
+This is by far the most impactful change in the entire project. No encoding changes. No retrieval changes. No new models. Just a better prompt that forces the LLM to show its reasoning before answering. Preferences jump from 36.7% to 76.7% because CoT forces the model to enumerate evidence and infer from behavior rather than guessing.
 
 **All retrieval experiments (100-instance stratified subset, apples-to-apples vs naive on same questions):**
 
@@ -186,14 +184,13 @@ Our system matches Mem0 using zero LLM calls during ingestion. Memobase and high
 
 | System | Overall | Source |
 |--------|---------|--------|
-| **gated-mem (naive + CoT)** | **80.4%** | This repo (97-instance subset) |
-| **gated-mem (naive + rerank)** | **79.8%** | This repo (94-instance subset) |
+| **gated-mem (naive + CoT)** | **78.2%** | This repo (499 instances) |
 | gated-mem (naive) | 72.4% | This repo (500 instances) |
 | Supermemory | ~71% | Their research page |
 | GPT-4o (full context) | ~60-64% | LongMemEval paper |
 | ReadAgent | ~55% | LongMemEval paper |
 
-With CoT prompting, our system outperforms all published baselines on LongMemEval by a wide margin, using only a local embedding model and one GPT-4o-mini call per question (no LLM during ingestion). Full 500-instance CoT run in progress.
+With CoT prompting, our system outperforms all published baselines on LongMemEval, using only a local embedding model and one GPT-4o-mini call per question (zero LLM calls during ingestion).
 
 ### Full Results Table
 
@@ -204,11 +201,11 @@ With CoT prompting, our system outperforms all published baselines on LongMemEva
 | Multi-signal (t=0.2) | 69.1%* | 72.3% | 79.5% | 61.7% | 60.3% | 46.7% |
 | + Inhibition only | — | 70.6% | 78.2% | 61.7% | 57.1% | 40.0% |
 | + All neuroplastic | — | 72.2% | 80.8% | 63.9% | 57.9% | 46.7% |
-| **Naive + CoT prompt** | — | **80.4%** | 81.2% | **68.0%** | **76.9%** | **66.7%** |
-| **Naive + Reranking** | — | 79.8% | **93.3%** | 76.9% | 66.7% | 20.0% |
+| **Naive + CoT prompt** | — | **78.2%** | 84.6% | **72.2%** | **63.2%** | **76.7%** |
+| Naive + Reranking | — | 79.8%† | **93.3%** | 76.9% | 66.7% | 20.0% |
 
 *\*LoCoMo multi-signal ran on 3/10 conversations. Apples-to-apples: naive 70.1% vs multi-signal 69.1%.*
-*CoT and rerank results on 97/94-instance stratified subsets. Full 500-instance CoT run in progress.*
+*CoT result is on full 499 instances. †Rerank result on 94-instance subset.*
 
 ---
 

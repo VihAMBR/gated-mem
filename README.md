@@ -136,7 +136,7 @@ After four phases of engineering encoding, retrieval, and memory reorganization,
 5. If asking about preferences, infer from behavior and stated opinions
 6. Give final answer
 
-**Results (full 500-instance LongMemEval):**
+**Definitive result (all 499 instances of LongMemEval):**
 
 | System | Overall | Multi-session | Preferences | Temporal | Knowledge-update |
 |--------|---------|---------------|-------------|----------|-----------------|
@@ -146,15 +146,17 @@ After four phases of engineering encoding, retrieval, and memory reorganization,
 
 This is by far the most impactful change in the entire project. No encoding changes. No retrieval changes. No new models. Just a better prompt that forces the LLM to show its reasoning before answering. Preferences jump from 36.7% to 76.7% because CoT forces the model to enumerate evidence and infer from behavior rather than guessing.
 
-**All retrieval experiments (100-instance stratified subset, apples-to-apples vs naive on same questions):**
+**Exploratory retrieval experiments (100-instance stratified subset):**
 
-| Experiment | Overall | vs Naive | Best Improvement | Worst Regression |
-|------------|---------|----------|------------------|-----------------|
-| **CoT prompting** | **80.4%** | **+9.3%** | Multi-session +23.1%, Preferences +33.3% | - |
-| **Cross-encoder reranking** | **79.8%** | **+4.3%** | Temporal +11.5%, KU +6.7% | Preferences -20.0% |
-| Recency boost | 71.4% | -1.0% | - | Preferences -16.7% |
+We also tested retrieval-level changes on a smaller 100-instance subset to quickly screen ideas. These numbers are **not directly comparable** to the full-benchmark results above due to the smaller, differently-distributed sample. (CoT scored 80.4% on this subset vs 78.2% on the full 499 instances, a gap explained entirely by sample composition.)
 
-CoT and reranking are complementary: CoT fixes reasoning-dependent categories (multi-session, preferences) while reranking fixes retrieval-dependent categories (temporal reasoning, knowledge updates). Recency bias doesn't help.
+| Experiment | Subset Overall | vs Naive (same subset) | N | Best Improvement | Worst Regression |
+|------------|---------------|----------------------|---|------------------|-----------------|
+| **CoT prompting** | 80.4% | +9.3% | 97 | Multi-session +23.1%, Preferences +33.3% | - |
+| **Cross-encoder reranking** | 79.8% | +4.3% | 94 | Temporal +11.5%, KU +6.7% | Preferences -20.0% |
+| Recency boost | 71.4% | -1.0% | 98 | - | Preferences -16.7% |
+
+The takeaway from this subset: CoT and reranking are complementary. CoT fixes reasoning-dependent categories (multi-session, preferences) while reranking fixes retrieval-dependent categories (temporal reasoning, knowledge updates). Recency bias doesn't help. The definitive CoT number is **78.2%** from the full benchmark above, not 80.4%.
 
 ### What This Means
 
@@ -202,10 +204,9 @@ With CoT prompting, our system outperforms all published baselines on LongMemEva
 | + Inhibition only | - | 70.6% | 78.2% | 61.7% | 57.1% | 40.0% |
 | + All neuroplastic | - | 72.2% | 80.8% | 63.9% | 57.9% | 46.7% |
 | **Naive + CoT prompt** | - | **78.2%** | 84.6% | **72.2%** | **63.2%** | **76.7%** |
-| Naive + Reranking | - | 79.8%† | **93.3%** | 76.9% | 66.7% | 20.0% |
+| Naive + Reranking† | - | 79.8% | **93.3%** | 76.9% | 66.7% | 20.0% |
 
-*\*LoCoMo multi-signal ran on 3/10 conversations. Apples-to-apples: naive 70.1% vs multi-signal 69.1%.*
-*CoT result is on full 499 instances. †Rerank result on 94-instance subset.*
+> **Sample sizes matter.** CoT is the only retrieval experiment run on the full benchmark (499 instances). Reranking† ran on a 94-instance subset only; its numbers are not directly comparable to the full-benchmark rows above it. LoCoMo multi-signal\* ran on 3/10 conversations (apples-to-apples on that subset: naive 70.1% vs multi-signal 69.1%).
 
 ---
 

@@ -9,3 +9,6 @@ nltk_data/
 LongMemEval/
 .claude/
 results/lme_embedding_cache.pkl
+results/lme_exp_decompose.json
+results/lme_exp_hyde.json
+results/lme_exp_multiturn.json

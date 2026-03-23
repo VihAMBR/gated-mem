@@ -148,15 +148,15 @@ After four phases of engineering encoding, retrieval, and memory reorganization,
 
 This is by far the most impactful change in the entire project. No encoding changes. No retrieval changes. No new models. Just a better prompt that forces the LLM to show its reasoning before answering.
 
-**Other retrieval experiments (in progress, 100-instance subset):**
+**All retrieval experiments (100-instance stratified subset, apples-to-apples vs naive on same questions):**
 
-| Experiment | What it tests | Status |
-|------------|--------------|--------|
-| **Recency boost** | Score = cosine_sim * (1 + 0.15 * recency_position) | 65.0% (= naive, no effect) |
-| **Cross-encoder reranking** | Re-score top-50 candidates with cross-encoder | Running (~5%) |
-| **Top-k=50** | Increase retrieval depth from 30 to 50 | Running (~3%) |
-| **BGE embeddings** | `BAAI/bge-small-en-v1.5` instead of MiniLM | Pending |
-| **Multi-turn windows** | 3-turn sliding window chunks | Running (encoding) |
+| Experiment | Overall | vs Naive | Best Improvement | Worst Regression |
+|------------|---------|----------|------------------|-----------------|
+| **CoT prompting** | **80.4%** | **+9.3%** | Multi-session +23.1%, Preferences +33.3% | — |
+| **Cross-encoder reranking** | **79.8%** | **+4.3%** | Temporal +11.5%, KU +6.7% | Preferences -20.0% |
+| Recency boost | 71.4% | -1.0% | — | Preferences -16.7% |
+
+CoT and reranking are complementary: CoT fixes reasoning-dependent categories (multi-session, preferences) while reranking fixes retrieval-dependent categories (temporal reasoning, knowledge updates). Recency bias doesn't help.
 
 ### What This Means
 
@@ -186,15 +186,14 @@ Our system matches Mem0 using zero LLM calls during ingestion. Memobase and high
 
 | System | Overall | Source |
 |--------|---------|--------|
-| **gated-mem (naive + CoT)** | **83.3%**† | This repo |
-| gated-mem (naive) | 72.4% | This repo |
+| **gated-mem (naive + CoT)** | **80.4%** | This repo (97-instance subset) |
+| **gated-mem (naive + rerank)** | **79.8%** | This repo (94-instance subset) |
+| gated-mem (naive) | 72.4% | This repo (500 instances) |
 | Supermemory | ~71% | Their research page |
 | GPT-4o (full context) | ~60-64% | LongMemEval paper |
 | ReadAgent | ~55% | LongMemEval paper |
 
-*†30-instance stratified subset; full-scale run in progress.*
-
-With CoT prompting, our system significantly outperforms all published baselines on LongMemEval, using only a local embedding model and one GPT-4o-mini call per question (no LLM during ingestion).
+With CoT prompting, our system outperforms all published baselines on LongMemEval by a wide margin, using only a local embedding model and one GPT-4o-mini call per question (no LLM during ingestion). Full 500-instance CoT run in progress.
 
 ### Full Results Table
 
@@ -205,10 +204,11 @@ With CoT prompting, our system significantly outperforms all published baselines
 | Multi-signal (t=0.2) | 69.1%* | 72.3% | 79.5% | 61.7% | 60.3% | 46.7% |
 | + Inhibition only | — | 70.6% | 78.2% | 61.7% | 57.1% | 40.0% |
 | + All neuroplastic | — | 72.2% | 80.8% | 63.9% | 57.9% | 46.7% |
-| **Naive + CoT prompt** | — | **83.3%**† | **75.0%** | **62.5%** | **87.5%** | **100%** |
+| **Naive + CoT prompt** | — | **80.4%** | 81.2% | **68.0%** | **76.9%** | **66.7%** |
+| **Naive + Reranking** | — | 79.8% | **93.3%** | 76.9% | 66.7% | 20.0% |
 
 *\*LoCoMo multi-signal ran on 3/10 conversations. Apples-to-apples: naive 70.1% vs multi-signal 69.1%.*
-*†CoT result on 30-instance stratified subset (apples-to-apples vs naive 70.0% on same questions).*
+*CoT and rerank results on 97/94-instance stratified subsets. Full 500-instance CoT run in progress.*
 
 ---
 

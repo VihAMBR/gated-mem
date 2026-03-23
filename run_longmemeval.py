@@ -56,6 +56,30 @@ Question (asked on {{question_date}}): {{question}}
 
 Answer:"""
 
+ANSWER_PROMPT_COT = """You are a helpful chat assistant with perfect long-term memory of all past conversations with the user.
+
+# MEMORIES FROM PAST CONVERSATIONS:
+
+User's messages:
+{{user_memories}}
+
+Assistant's messages:
+{{assistant_memories}}
+
+# TASK:
+Answer the question below using ONLY the memories above. Follow these reasoning steps:
+
+Step 1 — Identify every memory relevant to the question. List them.
+Step 2 — If the question asks "how many" or to count/list items, enumerate each distinct item found in the memories before giving a total.
+Step 3 — If information was updated over time (same topic, different dates), use the MOST RECENT version. State which date you are using.
+Step 4 — If the question involves time calculations, write out the start date, end date, and arithmetic.
+Step 5 — If the question asks about preferences, infer from the user's past behavior, stated opinions, and choices.
+Step 6 — Give your final answer in 1-2 concise sentences.
+
+Question (asked on {{question_date}}): {{question}}
+
+Let me work through this:"""
+
 
 class LongMemEvalSystem:
     """Runs LongMemEval with configurable memory strategies."""
@@ -71,6 +95,7 @@ class LongMemEvalSystem:
         gate_metric: str = "nearest_neighbor",
         gate_warmup: int = 3,
         plasticity_config=None,
+        use_cot: bool = False,
     ):
         self.embedder = SentenceTransformer(embedding_model_name)
         self.embedding_dim = self.embedder.get_sentence_embedding_dimension()
@@ -78,6 +103,7 @@ class LongMemEvalSystem:
         self.answer_workers = answer_workers
         self._openai_client = None
         self.answer_model = os.getenv("MODEL", "gpt-4o-mini")
+        self.use_cot = use_cot
 
         self.mode = mode
         self.gate_threshold = gate_threshold
@@ -275,7 +301,8 @@ class LongMemEvalSystem:
     def answer_question(self, question: str, question_date: str,
                         user_retrieved: list[str], asst_retrieved: list[str],
                         max_retries: int = 8) -> tuple[str, float]:
-        template = Template(ANSWER_PROMPT)
+        prompt_text = ANSWER_PROMPT_COT if self.use_cot else ANSWER_PROMPT
+        template = Template(prompt_text)
         prompt = template.render(
             user_memories=json.dumps(user_retrieved, indent=2),
             assistant_memories=json.dumps(asst_retrieved, indent=2),
@@ -364,6 +391,8 @@ def main():
     parser.add_argument("--warmup", type=int, default=3)
     parser.add_argument("--answer_workers", type=int, default=1)
     parser.add_argument("--max_instances", type=int, default=None)
+    parser.add_argument("--cot", action="store_true", default=False,
+                        help="Use chain-of-thought answer prompt")
 
     # Plasticity flags (only for neuroplastic mode)
     parser.add_argument("--enable_ltp", action="store_true", default=True)
@@ -378,7 +407,8 @@ def main():
     args = parser.parse_args()
 
     if args.output is None:
-        args.output = f"results/lme_{args.mode}.json"
+        suffix = "_cot" if args.cot else ""
+        args.output = f"results/lme_{args.mode}{suffix}.json"
 
     plasticity_config = None
     if args.mode == "neuroplastic":
@@ -421,6 +451,7 @@ def main():
         gate_metric=args.gate_metric,
         gate_warmup=args.warmup,
         plasticity_config=plasticity_config,
+        use_cot=args.cot,
     )
 
     # Resume support

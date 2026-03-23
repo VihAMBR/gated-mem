@@ -1,14 +1,14 @@
-# gated-mem: What Actually Works for LLM Long-Term Memory
+# gated-mem: What Works for LLM Long-Term Memory
 
 An experimental investigation into memory systems for conversational AI agents. This project started as an attempt to build a biologically-inspired "neuroplastic" memory system, and became an honest accounting of what matters and what doesn't when an LLM needs to remember past conversations.
 
-**The headline finding:** After weeks of engineering increasingly sophisticated encoding, retrieval, and memory reorganization systems, the single biggest improvement came from changing the **answer prompt**. Adding chain-of-thought reasoning to a naive RAG baseline jumped accuracy from 72.3% to **78.2% on LongMemEval** (+5.8% on all 500 instances), with a **+40 percentage point** gain on preference questions. The bottleneck was never the memory system — it was how the LLM processed the retrieved context.
+**The headline finding:** After weeks of engineering increasingly sophisticated encoding, retrieval, and memory reorganization systems, the single biggest improvement came from changing the **answer prompt**. Adding chain-of-thought reasoning to a naive RAG baseline jumped accuracy from 72.3% to **78.2% on LongMemEval** (+5.8% on all 500 instances), with a **+40 percentage point** gain on preference questions. The bottleneck was never the memory system - it was how the LLM processed the retrieved context.
 
 ---
 
 ## The Research Journey
 
-This is written in the order we actually built and tested things, not restructured after the fact. The failures are as informative as the successes.
+This is written in the order we built and tested things, not restructured after the fact. The failures are as informative as the successes.
 
 ### Phase 1: The Naive Baseline
 
@@ -17,7 +17,7 @@ This is written in the order we actually built and tested things, not restructur
 **What we built:**
 - Every conversation turn stored as `"<timestamp> | <Speaker>: <text>"`
 - Embedded with `all-MiniLM-L6-v2` (384-dim, ~80MB, runs locally)
-- Indexed in FAISS (`IndexFlatIP` — exact inner product search)
+- Indexed in FAISS (`IndexFlatIP`, exact inner product search)
 - Top-30 most similar memories retrieved per query
 - GPT-4o-mini generates the answer from retrieved context
 - GPT-4o-mini as LLM judge (using Mem0's prompts for LoCoMo, official per-type prompts for LongMemEval)
@@ -29,18 +29,18 @@ This is written in the order we actually built and tested things, not restructur
 | LoCoMo (10 convs, 1540 Qs) | **62.0%** | Temporal 67.1% | Open-domain 44.8% |
 | LongMemEval (500 instances) | **72.4%** | IE-Assistant 98.2% | Preferences 36.7% |
 
-The LongMemEval score was surprising. The paper reports GPT-4o with full context at ~60-64%. Our simple retrieve-then-answer pipeline beats brute-force context stuffing because FAISS retrieval acts as a relevance filter — the LLM sees 30 focused memories instead of 115K tokens of noise.
+The LongMemEval score was surprising. The paper reports GPT-4o with full context at ~60-64%. Our simple retrieve-then-answer pipeline beats brute-force context stuffing because FAISS retrieval acts as a relevance filter: the LLM sees 30 focused memories instead of 115K tokens of noise.
 
 **Cost:** Zero LLM calls during ingestion. One LLM call per question at inference.
 
-### Phase 2: Surprise-Gated Encoding — The First Failure
+### Phase 2: Surprise-Gated Encoding - The First Failure
 
 **Hypothesis:** Most conversation turns are phatic or redundant. If we only store "surprising" messages (those whose embedding is distant from all stored memories), we can compress the memory bank without losing retrieval quality.
 
 **What we built:**
 - `SurpriseGatedEncoder`: computes `surprise = 1 - max(cosine_similarity(new, stored))`
 - If surprise >= threshold, store. Otherwise, skip.
-- Per-speaker gates — novelty is relative to each speaker's history
+- Per-speaker gates (novelty is relative to each speaker's history)
 - Warmup: first 3 messages always stored
 
 **Results (LoCoMo, 10 conversations):**
@@ -54,9 +54,9 @@ The LongMemEval score was surprising. The paper reports GPT-4o with full context
 
 *\*t=0.3/0.4/0.5 ran on 2 conversations only (not full benchmark)*
 
-**What went wrong:** Surprise gating is a blunt instrument. Temporal information looks "unsurprising" to embeddings — "I moved to SF in March" and "I started my new job in April" have similar embedding patterns to existing life-update messages, so they get filtered. But these are exactly the facts that LoCoMo's temporal questions ask about. The gate threw away what mattered most.
+**What went wrong:** Surprise gating is a blunt instrument. Temporal information looks "unsurprising" to embeddings. "I moved to SF in March" and "I started my new job in April" have similar embedding patterns to existing life-update messages, so they get filtered. But these are exactly the facts that LoCoMo's temporal questions ask about. The gate threw away what mattered most.
 
-### Phase 3: Multi-Signal Encoding — Partial Recovery
+### Phase 3: Multi-Signal Encoding - Partial Recovery
 
 **Hypothesis:** Surprise alone is insufficient. Add bypass mechanisms for information that has low embedding novelty but high semantic importance: temporal content and novel entities.
 
@@ -74,7 +74,7 @@ store = (surprise > threshold) OR has_temporal_markers OR has_novel_entities
 | System | LoCoMo (convs 0-2) | LongMemEval (500) |
 |--------|---------------------|-------------------|
 | Naive | 70.1% | **72.4%** |
-| Surprise t=0.2 | 63.1% | — |
+| Surprise t=0.2 | 63.1% | - |
 | Multi-signal t=0.2 | **69.1%** | 72.3% |
 
 The temporal and entity bypasses recovered most of what surprise gating destroyed. On LoCoMo, multi-signal is within 1% of naive while storing 30% less. On LongMemEval, it's essentially identical overall but shifts category performance:
@@ -89,9 +89,9 @@ The temporal and entity bypasses recovered most of what surprise gating destroye
 
 **Lesson learned:** The encoding stage is not the bottleneck. Storing 30% less data is useful for cost/latency at scale, but it doesn't improve answer quality. The LLM is already good at finding relevant information in a pile of context.
 
-### Phase 4: Neuroplastic Memory — The Ambitious Attempt
+### Phase 4: Neuroplastic Memory - The Ambitious Attempt
 
-**Hypothesis:** A memory system that reorganizes itself through use — strengthening useful memories, linking related ones, suppressing outdated ones, consolidating duplicates — should outperform a static store.
+**Hypothesis:** A memory system that reorganizes itself through use (strengthening useful memories, linking related ones, suppressing outdated ones, consolidating duplicates) should outperform a static store.
 
 **What we built (`NeuroplasticMemory`, four mechanisms):**
 
@@ -112,21 +112,21 @@ The temporal and entity bypasses recovered most of what surprise gating destroye
 | + All neuroplastic | 72.2% | 80.8% | 63.9% | 57.9% | **46.7%** |
 | Naive (control) | **72.4%** | **84.6%** | **67.7%** | 54.9% | 36.7% |
 
-**What went wrong — and why:**
+**What went wrong, and why:**
 
 - **LTP/LTD was structurally inactive.** LongMemEval has one question per instance. Retrieval strengthening requires a multi-question feedback loop where the system learns which memories are useful from earlier questions. With one question, there's nothing to learn from.
 
-- **Associative linking never formed links.** Same reason — zero co-retrieval events means zero associations. This mechanism needs dozens of questions per conversation to build a useful graph.
+- **Associative linking never formed links.** Same reason: zero co-retrieval events means zero associations. This mechanism needs dozens of questions per conversation to build a useful graph.
 
 - **Inhibition over-triggered.** The 0.85 cosine threshold caught topically similar but non-contradictory memories. "I love my job at the clinic" and "busy day at the clinic" score > 0.85 but don't contradict each other. False positive inhibitions suppressed useful memories, dropping knowledge-update accuracy by 6.4% compared to naive.
 
-- **Consolidation was neutral.** It merged 1,259 near-duplicates across 500 instances and created 77 abstractions. The merges removed genuine duplicates (helpful), but the abstractions — centroid embeddings with template text like "[Consolidated pattern from 4 memories]" — weren't informative enough for the LLM to extract answers from.
+- **Consolidation was neutral.** It merged 1,259 near-duplicates across 500 instances and created 77 abstractions. The merges removed genuine duplicates (helpful), but the abstractions (centroid embeddings with template text like "[Consolidated pattern from 4 memories]") weren't informative enough for the LLM to extract answers from.
 
 **The uncomfortable truth:** These mechanisms aren't wrong. They're well-motivated by neuroscience and would genuinely help in a system that answers thousands of questions over months. But no benchmark tests that. LoCoMo and LongMemEval both evaluate static, one-shot retrieval from a pre-loaded memory bank. The neuroplastic features have nothing to adapt to.
 
 ### Phase 5: The Prompt Was the Bottleneck All Along
 
-After four phases of engineering encoding, retrieval, and memory reorganization, we tested whether simply changing the **answer prompt** would matter more. It did — by a wide margin.
+After four phases of engineering encoding, retrieval, and memory reorganization, we tested whether simply changing the **answer prompt** would matter more. It did, by a wide margin.
 
 **Chain-of-Thought (CoT) prompting** replaces the default "answer in 1-2 sentences" prompt with an explicit reasoning scaffold:
 1. Identify every relevant memory
@@ -150,17 +150,17 @@ This is by far the most impactful change in the entire project. No encoding chan
 
 | Experiment | Overall | vs Naive | Best Improvement | Worst Regression |
 |------------|---------|----------|------------------|-----------------|
-| **CoT prompting** | **80.4%** | **+9.3%** | Multi-session +23.1%, Preferences +33.3% | — |
+| **CoT prompting** | **80.4%** | **+9.3%** | Multi-session +23.1%, Preferences +33.3% | - |
 | **Cross-encoder reranking** | **79.8%** | **+4.3%** | Temporal +11.5%, KU +6.7% | Preferences -20.0% |
-| Recency boost | 71.4% | -1.0% | — | Preferences -16.7% |
+| Recency boost | 71.4% | -1.0% | - | Preferences -16.7% |
 
 CoT and reranking are complementary: CoT fixes reasoning-dependent categories (multi-session, preferences) while reranking fixes retrieval-dependent categories (temporal reasoning, knowledge updates). Recency bias doesn't help.
 
 ### What This Means
 
-Weeks of engineering went into optimizing the wrong layer. The encoding, retrieval, and memory reorganization experiments all operated on the assumption that getting the right memories in front of the LLM was the hard part. In reality, GPT-4o-mini was already seeing the right information — it just wasn't reasoning carefully enough to extract the answer.
+Weeks of engineering went into optimizing the wrong layer. The encoding, retrieval, and memory reorganization experiments all operated on the assumption that getting the right memories in front of the LLM was the hard part. In reality, GPT-4o-mini was already seeing the right information but wasn't reasoning carefully enough to extract the answer.
 
-The CoT prompt fixes this by forcing explicit enumeration (helps counting), temporal ordering (helps knowledge updates), and evidence marshaling (helps multi-hop inference). The cost is zero additional API calls — just a longer prompt template.
+The CoT prompt fixes this by forcing explicit enumeration (helps counting), temporal ordering (helps knowledge updates), and evidence marshaling (helps multi-hop inference). The cost is zero additional API calls, just a longer prompt template.
 
 ---
 
@@ -197,12 +197,12 @@ With CoT prompting, our system outperforms all published baselines on LongMemEva
 | System | LoCoMo | LME Overall | LME-KU | LME-TR | LME-MR | LME-Pref |
 |--------|--------|-------------|--------|--------|--------|----------|
 | Naive (store all) | 62.0% | 72.4% | 84.6% | 67.7% | 54.9% | 36.7% |
-| Surprise-gated (t=0.2) | 57.9% | — | — | — | — | — |
+| Surprise-gated (t=0.2) | 57.9% | - | - | - | - | - |
 | Multi-signal (t=0.2) | 69.1%* | 72.3% | 79.5% | 61.7% | 60.3% | 46.7% |
-| + Inhibition only | — | 70.6% | 78.2% | 61.7% | 57.1% | 40.0% |
-| + All neuroplastic | — | 72.2% | 80.8% | 63.9% | 57.9% | 46.7% |
-| **Naive + CoT prompt** | — | **78.2%** | 84.6% | **72.2%** | **63.2%** | **76.7%** |
-| Naive + Reranking | — | 79.8%† | **93.3%** | 76.9% | 66.7% | 20.0% |
+| + Inhibition only | - | 70.6% | 78.2% | 61.7% | 57.1% | 40.0% |
+| + All neuroplastic | - | 72.2% | 80.8% | 63.9% | 57.9% | 46.7% |
+| **Naive + CoT prompt** | - | **78.2%** | 84.6% | **72.2%** | **63.2%** | **76.7%** |
+| Naive + Reranking | - | 79.8%† | **93.3%** | 76.9% | 66.7% | 20.0% |
 
 *\*LoCoMo multi-signal ran on 3/10 conversations. Apples-to-apples: naive 70.1% vs multi-signal 69.1%.*
 *CoT result is on full 499 instances. †Rerank result on 94-instance subset.*
@@ -233,7 +233,7 @@ A meaningful benchmark for long-term memory agents would process a sequence of 5
 Based on everything we learned:
 
 **For maximum accuracy (the "best system"):**
-1. Store every conversation turn (naive encoding — don't filter)
+1. Store every conversation turn (naive encoding, don't filter)
 2. Embed with `all-MiniLM-L6-v2`, index in FAISS
 3. Retrieve top-30 by cosine similarity
 4. Answer with Chain-of-Thought prompt (forces enumeration, temporal ordering, evidence marshaling)
@@ -358,7 +358,7 @@ python run_lme_experiments.py --experiment topk50                          # Top
 python run_experiment.py compare                                           # Cross-experiment comparison
 ```
 
-All runners support **resume** — if interrupted, re-run the same command and it continues from where it left off.
+All runners support **resume**: if interrupted, re-run the same command and it continues from where it left off.
 
 ### Parameters
 

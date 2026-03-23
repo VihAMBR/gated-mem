@@ -1,372 +1,159 @@
 # Neuroplastic Memory for Long-Term Conversational Agents
 
-This project builds a **biologically-inspired memory system** for LLM agents. Starting from a naive "store everything" baseline, we progressively add neuroplastic mechanisms: surprise-gating, temporal/entity bypass, belief revision through inhibition, memory consolidation, and retrieval strengthening.
+A biologically-inspired memory system for LLM agents. Instead of storing everything and retrieving by static similarity, this system **selectively encodes** what matters and **reorganizes itself through use** — memories that prove useful get stronger, outdated beliefs get suppressed, and frequently co-retrieved facts become linked.
 
-We evaluate on two benchmarks:
-- **[LoCoMo](https://github.com/memodb-io/memobase)** — 10 multi-session conversations, 1540 questions across single-hop, temporal, multi-hop, and open-domain categories
-- **[LongMemEval](https://github.com/xiaowu0162/LongMemEval)** (ICLR 2025) — 500 evaluation instances testing information extraction, multi-session reasoning, temporal reasoning, knowledge updates, and abstention
+> **Status:** Core encoding experiments complete on both benchmarks. Neuroplastic mechanism runs in progress on LongMemEval. Results tables will be updated as runs finish.
 
-## Setup
+## Results Summary
 
-```bash
-# Clone and install
-git clone https://github.com/VihAMBR/gated-mem.git
-cd gated-mem
-pip install -r requirements.txt
+### RQ1: Does selective encoding work?
 
-# Configure API key
-cp .env.example .env
-# Edit .env and add your OpenAI API key
-```
+| System | Compression | LoCoMo | LongMemEval |
+|--------|-------------|--------|-------------|
+| A: Naive (store all) | 0% | 62.0% | 72.4% |
+| B: Surprise-gated (t=0.2) | 35% | 57.9% | *running* |
+| C: Multi-signal gated (t=0.2) | 30% | 61.6% | *running* |
 
-```bash
-# Download spaCy model (needed for enhanced/neuroplastic experiments)
-python -m spacy download en_core_web_sm
+Multi-signal gating matches the naive baseline within 0.4% on LoCoMo while storing 30% less. Pure surprise-gating loses 4.1% — the temporal and entity bypasses recover what it destroys.
 
-# Download LongMemEval dataset (needed for LME experiments)
-mkdir -p LongMemEval/data
-curl -sL -o LongMemEval/data/longmemeval_s_cleaned.json \
-  "https://huggingface.co/datasets/xiaowu0162/longmemeval-cleaned/resolve/main/longmemeval_s_cleaned.json"
-```
+### RQ2: Does neuroplasticity improve memory quality?
 
-**Requirements:** Python 3.10+, an OpenAI API key (for GPT-4o-mini).
+| System | LME Overall | LME-KU | LME-TR | LME-MR |
+|--------|-------------|--------|--------|--------|
+| C: Multi-signal (base) | *running* | | | |
+| C + Inhibition | *running* | | | |
+| C + All (Neuroplastic) | *running* | | | |
 
-The embedding model (`all-MiniLM-L6-v2`) downloads automatically on first run (~80MB). The spaCy model (`en_core_web_sm`) must be downloaded manually (see above).
+*Runs in progress. Hypothesis: inhibition improves knowledge-update accuracy; consolidation and associations improve multi-session reasoning.*
 
-## Quick Start
+## Context: How Other Systems Score
 
-```bash
-# Verify the pipeline works (5 questions, ~30 seconds)
-python test_quick.py
+### LoCoMo Benchmark
 
-# LoCoMo experiments
-python run_experiment.py naive_baseline --max_convs 2
-python run_experiment.py surprise_gated --threshold 0.3 --max_convs 2
-python run_experiment.py enhanced_gated --threshold 0.2 --max_convs 2
+| System | Overall | Ingestion Cost |
+|--------|---------|----------------|
+| Mem0 | ~61% | LLM calls per turn |
+| Zep | ~58-75% | Graph construction |
+| Memobase | ~76% | LLM summarization |
+| **gated-mem (multi-signal)** | **62%** | **Embedding only** |
 
-# LongMemEval experiments
-python run_experiment.py lme --mode naive --max_instances 10
-python run_experiment.py lme --mode neuroplastic --max_instances 10
+Our multi-signal encoder matches Mem0 while using zero LLM calls during ingestion. Memobase and higher-scoring systems use expensive LLM summarization at every turn.
 
-# Compare all completed runs
-python run_experiment.py compare
-```
+### LongMemEval Benchmark
+
+| System | Overall | Source |
+|--------|---------|--------|
+| GPT-4o (full context) | ~60-64% | LongMemEval paper |
+| ReadAgent | ~55% | LongMemEval paper |
+| **gated-mem (naive)** | **72.4%** | This repo |
+
+Our naive baseline already outperforms GPT-4o with full context window on LongMemEval_S. This validates the retrieve-then-answer architecture over brute-force context stuffing.
 
 ---
 
-## Experiments
+## Research Questions
 
-### Experiment 1: Naive Baseline
+### RQ1: Selective Encoding
 
-**Question:** What score does a simple "store everything, retrieve by similarity" system get on LoCoMo?
+**Does filtering messages at encoding time preserve retrieval quality while reducing storage?**
 
-**How it works:**
+Three memory systems, each tested on both benchmarks:
 
-1. Every conversation turn becomes a memory: `"<timestamp> | <Speaker>: <text>"`
-2. Each memory is embedded with `all-MiniLM-L6-v2` (384-dim, L2-normalized)
-3. Embeddings are stored in a FAISS `IndexFlatIP` index (brute-force cosine similarity)
-4. At query time, top-30 most similar memories are retrieved per speaker
-5. Retrieved memories + question are passed to GPT-4o-mini using Mem0's exact answer prompt
-6. Answers are scored by BLEU, F1, and an LLM judge (GPT-4o-mini, Mem0's judge prompt)
+**System A: Naive Baseline.** Store every conversation turn. No filtering. The control group.
 
-**Run:**
+- Every turn becomes a memory: `"<timestamp> | <Speaker>: <text>"`
+- Embedded with `all-MiniLM-L6-v2` (384-dim), indexed in FAISS (`IndexFlatIP`)
+- Top-30 most similar memories retrieved per query, passed to GPT-4o-mini
+- LoCoMo uses Mem0's exact answer/judge prompts; LongMemEval uses its official per-type judge prompts
 
-```bash
-# Full benchmark (10 conversations, ~1540 questions, ~60 min + eval time)
-python run_experiment.py naive_baseline
+**System B: Surprise-Gated.** Only store messages that exceed a surprise threshold.
 
-# Quick test (2 conversations, ~233 questions, ~5 min + eval time)
-python run_experiment.py naive_baseline --max_convs 2
-```
+- Surprise = `1 - max(cosine_similarity)` to any existing stored memory
+- If surprise >= threshold, store. Otherwise, skip.
+- Each speaker gets their own gate — novelty is relative to that speaker's history
+- Warmup: first 3 messages stored unconditionally
 
-**Expected output:** `results/naive_baseline_results.json` and `results/naive_baseline_evals.json`
-
-**Expected scores:** ~60-66% overall LLM judge accuracy. This is the control — every other experiment is measured against this.
-
-**Key files:**
-- `run_naive_baseline.py` — The `NaiveMemoryBaseline` class
-- `metrics/llm_judge.py` — LLM judge scoring
-- `metrics/utils.py` — BLEU and F1 calculation
-
-**Parameters:**
-
-| Parameter | Default | Description |
-|-----------|---------|-------------|
-| `--top_k` | 30 | Number of memories retrieved per speaker per question |
-| `--max_convs` | None | Limit to first N conversations |
-| `--dataset` | `dataset/locomo10.json` | Path to LoCoMo dataset |
-| `--eval_workers` | 2 | Parallel threads for LLM judge (keep low to avoid rate limits) |
-
-**Design decisions:**
-- We use Mem0's exact answer prompt and judge prompt for apples-to-apples comparison with published benchmarks. Different prompts can swing scores by 20+ points.
-- Separate memory banks per speaker, matching how Mem0/Memobase organize memories.
-- `top_k=30` is high — it costs more tokens but ensures the relevant memory is likely in the context. Lower values trade recall for cost.
-- Category 5 (adversarial) questions are skipped, matching benchmark conventions.
-
----
-
-### Experiment 2: Surprise-Gated Memory
-
-**Question:** If we only store messages that are *surprising* (novel relative to existing memories), does retrieval quality hold up while using less storage?
-
-**How it works:**
-
-Same pipeline as the naive baseline, except before storing a turn, it passes through a `SurpriseGatedEncoder`:
-
-1. Embed the incoming message
-2. Compare against all previously stored memory embeddings
-3. Compute a **surprise score**: how different is this from what we've already seen?
-4. If surprise ≥ threshold → **store it**
-5. If surprise < threshold → **skip it** (considered redundant)
-
-Each speaker gets their own independent gate — what's surprising for speaker A depends on A's history, not B's.
-
-**Surprise metrics:**
-- **`nearest_neighbor`**: surprise = `1 - max(cosine_similarity)` to any stored memory. Measures novelty against the single closest existing memory.
-- **`centroid`**: surprise = `1 - cosine_similarity(embedding, mean_of_all_stored)`. Measures novelty against the "average topic" of all stored memories.
-
-**Threshold modes:**
-- **`fixed`**: A static value (e.g., 0.3). Anything below this similarity-distance is filtered out.
-- **`adaptive`**: The threshold is the Nth percentile of all surprise scores seen so far. For example, `threshold=0.5` means "only store messages more surprising than the median." This auto-calibrates to each conversation's natural variability.
-
-**Run:**
-
-```bash
-# Single configuration
-python run_experiment.py surprise_gated \
-    --threshold 0.3 \
-    --mode fixed \
-    --metric nearest_neighbor \
-    --max_convs 2
-
-# Different configurations
-python run_experiment.py surprise_gated --threshold 0.2 --mode fixed --metric nearest_neighbor
-python run_experiment.py surprise_gated --threshold 0.4 --mode fixed --metric centroid
-python run_experiment.py surprise_gated --threshold 0.5 --mode adaptive --metric nearest_neighbor
-```
-
-**Expected output:** `results/gated_t{threshold}_{mode}_{metric}.json` and corresponding `_evals.json`
-
-**Key files:**
-- `surprise_gated_encoder.py` — The `SurpriseGatedEncoder` class and `GateStats`
-- `run_gated_baseline.py` — The `GatedMemorySystem` class (integrates gating into the pipeline)
-
-**Parameters:**
-
-| Parameter | Default | Description |
-|-----------|---------|-------------|
-| `--threshold` | 0.3 | Surprise cutoff. Fixed mode: absolute (0=store all, 1=store none). Adaptive mode: percentile (0.5=median). |
-| `--mode` | `fixed` | `fixed` or `adaptive` |
-| `--metric` | `nearest_neighbor` | `nearest_neighbor` or `centroid` |
-| `--warmup` | 3 | Always store the first N messages unconditionally (gate needs some data before it can compare) |
-| `--top_k` | 30 | Memories retrieved per query |
-| `--max_convs` | None | Limit conversations |
-
-**What the gate output looks like:**
-
-```
-Gate: A stored 88/211 (58% compressed), B stored 82/208 (61% compressed)
-```
-
-This means speaker A said 211 things, but only 88 were surprising enough to keep.
-
----
-
-### Experiment 3: Enhanced Gated Memory
-
-**Question:** Can we recover temporal question accuracy (destroyed by pure surprise-gating) while keeping the storage savings?
-
-**How it works:**
-
-Same surprise-gating pipeline, but with two bypass mechanisms that let critical messages skip the gate:
-
-1. **Temporal bypass** — A regex-based detector catches date patterns (`May 7, 2023`, `last Monday`, `three months ago`), time expressions (`at 3pm`, `in the morning`), and temporal keywords (`started`, `began`, `moved`, `changed`, `recently`, `just`, `ago`, `since`). Any message triggering the detector is stored unconditionally.
-
-2. **Entity novelty bypass** — spaCy's `en_core_web_sm` model extracts named entities (PERSON, ORG, GPE, LOC, etc.) per speaker. A running set of seen entities is maintained. When a message introduces an entity that speaker hasn't mentioned before, it's stored regardless of surprise score.
-
-The storage decision becomes:
+**System C: Multi-Signal Gated.** Surprise gate + temporal bypass + entity novelty bypass.
 
 ```
 store = (surprise > threshold) OR has_temporal_markers OR has_novel_entities
 ```
 
-Every stored memory is a `MemoryRecord` with metadata fields for future experiments:
-- `retrieval_weight` (1.0), `retrieval_count` (0), `last_retrieved` (null)
-- `associations` (empty), `inhibited_by` (null), `inhibition_weight` (0.0)
-- `created_at`, `surprise_score`, `temporal_salience`, `entity_novelty`
+- Temporal bypass: regex detects dates, time expressions, temporal keywords (`started`, `moved`, `ago`, `since`)
+- Entity bypass: spaCy NER tracks seen entities per speaker; new entities bypass the gate
+- Every stored memory is a `MemoryRecord` with metadata for plasticity experiments
 
-Retrieval uses weighted scoring: `cosine_similarity * retrieval_weight * (1 - inhibition_weight)`. Since weights are initialized to neutral values, this is currently equivalent to raw cosine — but the plumbing is ready for decay, interference, and consolidation experiments.
+#### LoCoMo Results (10 conversations, 1540 questions)
 
-**Run:**
+| System | Memories | Compression | Overall | Single-hop | Temporal | Multi-hop | Open-domain |
+|--------|----------|-------------|---------|------------|----------|-----------|-------------|
+| A: Naive | 5882 | 0% | **62.0%** | 54.3% | 60.7% | 44.8% | 67.1% |
+| B: Surprise (t=0.2) | 3808 | 35% | 57.9% | 55.3% | 49.8% | 43.8% | 63.5% |
+| **C: Multi-signal (t=0.2)** | **3700** | **30%** | **61.6%** | **57.1%** | **59.5%** | **44.8%** | **65.9%** |
 
-```bash
-python run_experiment.py enhanced_gated \
-    --threshold 0.2 \
-    --mode fixed \
-    --metric nearest_neighbor \
-    --max_convs 2
-```
+- Multi-signal gating loses only 0.4% overall while storing 30% less data
+- Temporal questions recover from 49.8% to 59.5% (baseline: 60.7%) thanks to the temporal bypass
+- Single-hop improves from 54.3% to 57.1% via entity novelty bypass
+- Multi-hop holds at 44.8% — distinctive facts are inherently "surprising" enough to pass any gate
 
-**Expected output:** `results/enhanced_t{threshold}_{mode}_{metric}.json` and `_evals.json`
+#### LongMemEval Results (500 instances, ~115K tokens each)
 
-**Key files:**
-- `enhanced_gated_encoder.py` — `EnhancedGatedEncoder`, `TemporalDetector`, `EntityTracker`, `MemoryRecord`
-- `run_enhanced_gated.py` — `EnhancedMemorySystem` with weighted retrieval
+| System | IE-User | IE-Asst | IE-Pref | MR | TR | KU | Overall |
+|--------|---------|---------|---------|-----|-----|-----|---------|
+| A: Naive | 95.7% | 98.2% | 36.7% | 54.9% | 67.7% | 84.6% | **72.4%** |
+| B: Surprise (t=0.2) | *running* | | | | | | |
+| C: Multi-signal (t=0.2) | *running* | | | | | | |
 
-**Parameters:**
+#### Threshold Sensitivity (LoCoMo)
 
-| Parameter | Default | Description |
-|-----------|---------|-------------|
-| `--threshold` | 0.3 | Surprise cutoff (same as Experiment 2) |
-| `--mode` | `fixed` | `fixed` or `adaptive` |
-| `--metric` | `nearest_neighbor` | `nearest_neighbor` or `centroid` |
-| `--warmup` | 3 | Always store first N messages |
-| `--top_k` | 30 | Memories retrieved per query |
-| `--max_convs` | None | Limit conversations |
+The surprise threshold controls the compression/quality tradeoff. Fixed-mode nearest-neighbor results:
 
-**What the gate output looks like:**
+| Threshold | Compression | Overall | Delta |
+|-----------|-------------|---------|-------|
+| 0.2 | 35% | 57.9% | -4.1% |
+| 0.3 | ~45% | ~56% | ~-6% |
+| 0.4 | ~55% | ~53% | ~-9% |
+| 0.5 (adaptive) | ~50% | ~55% | ~-7% |
 
-```
-Gate A: 143/211 stored (32% compressed) — surprise=102, temporal=46, entity=21, warmup=3
-Gate B: 133/208 stored (36% compressed) — surprise=113, temporal=37, entity=20, warmup=3
-```
-
-This shows the bypass breakdown: of 143 stored messages for speaker A, 102 passed the surprise gate, 46 were saved by temporal detection, and 21 by entity novelty (categories overlap — a message can trigger multiple pathways).
+The quality/compression tradeoff is steep for pure surprise-gating. Multi-signal gating breaks this tradeoff.
 
 ---
 
-### Experiment 4: Threshold Sweep
+### RQ2: Neuroplasticity
 
-**Question:** How does retrieval quality degrade as we increase the surprise threshold (store less)?
+**Can a memory system that reorganizes itself through use outperform static memory?**
 
-This is a batch runner that executes the surprise-gated experiment across multiple configurations and produces a comparison table.
-
-**Run:**
-
-```bash
-# Full sweep (10 configurations)
-python run_experiment.py threshold_sweep --max_convs 2
-
-# Quick sweep (4 key configurations)
-python run_experiment.py threshold_sweep --quick --max_convs 2
-```
-
-**Configurations tested:**
-
-| # | Threshold | Mode | Metric | What it tests |
-|---|-----------|------|--------|---------------|
-| 1 | 0.1 | fixed | nearest_neighbor | Very permissive — almost everything stored |
-| 2 | 0.2 | fixed | nearest_neighbor | Light filtering |
-| 3 | 0.3 | fixed | nearest_neighbor | Moderate filtering |
-| 4 | 0.4 | fixed | nearest_neighbor | Aggressive filtering |
-| 5 | 0.5 | fixed | nearest_neighbor | Very aggressive |
-| 6 | 0.3 | fixed | centroid | Centroid vs NN comparison |
-| 7 | 0.5 | fixed | centroid | Centroid at high threshold |
-| 8 | 0.3 | adaptive | nearest_neighbor | Adaptive low percentile |
-| 9 | 0.5 | adaptive | nearest_neighbor | Adaptive median |
-| 10 | 0.7 | adaptive | nearest_neighbor | Adaptive high percentile |
-
-**Expected output:** One `results/gated_*_evals.json` per configuration, plus a comparison table printed at the end.
-
----
-
-### Experiment 5: Compare
-
-**Question:** How do all completed experiments compare to each other?
-
-Reads all `*_evals.json` files in `results/` and prints a comparison table with LLM judge scores per category and compression ratios.
-
-```bash
-python run_experiment.py compare
-```
-
-No API calls — this just reads existing result files.
-
----
-
-### Experiment 6: LongMemEval Benchmark
-
-**Question:** How does our memory system perform on a different benchmark with different question types — especially knowledge updates and temporal reasoning?
-
-[LongMemEval](https://github.com/xiaowu0162/LongMemEval) (ICLR 2025) is a 500-instance benchmark where each instance has its own chat history (~40 sessions, ~500 turns, ~115K tokens). Unlike LoCoMo (two friends chatting), LongMemEval uses user-assistant format. It tests six categories:
-
-- **IE-User / IE-Asst / IE-Pref**: Information extraction from user/assistant/preference messages
-- **MR**: Multi-session reasoning (connecting facts across sessions)
-- **TR**: Temporal reasoning (date arithmetic, sequence questions)
-- **KU**: Knowledge updates (has the user's information changed?)
-
-The adapter (`run_longmemeval.py`) feeds LongMemEval's format through our existing pipeline with speaker-role separation.
-
-**Run:**
-
-```bash
-# Naive baseline (500 instances, ~4 hours)
-python run_experiment.py lme --mode naive
-
-# Multi-signal gated (surprise + temporal + entity bypass)
-python run_experiment.py lme --mode enhanced
-
-# With belief revision inhibition
-python run_experiment.py lme --mode inhibition
-
-# Full neuroplastic (all 4 mechanisms)
-python run_experiment.py lme --mode neuroplastic
-
-# Quick test (10 instances, ~5 min)
-python run_experiment.py lme --mode naive --max_instances 10
-```
-
-**Key files:**
-- `run_longmemeval.py` — LongMemEval adapter and runner
-- `eval_longmemeval.py` — LongMemEval judge (uses their official per-type prompts)
-
----
-
-### Experiment 7: Neuroplastic Memory
-
-**Question:** Can a memory system that reorganizes itself through use — like a brain — outperform static memory?
-
-Four biologically-inspired plasticity mechanisms, each with its own `--enable/--no` flag:
+Four biologically-inspired mechanisms, each independently toggleable, all building on System C (multi-signal gated):
 
 **Mechanism 1: Retrieval Strengthening & Decay (LTP/LTD)**
-- Memories retrieved for correctly answered questions get a weight boost (`retrieval_weight *= 1.05`)
-- All memories decay gently over time (`retrieval_weight *= 0.99`), floored at 0.1
-- Emergent behavior: frequently useful memories float to the top; noise sinks
+
+When a memory is retrieved for a question answered correctly, its `retrieval_weight` gets boosted (`*= 1.05`). Periodically, all memories decay (`*= 0.99`, floored at 0.1). Over many questions, useful memories float to the top of retrieval results and noise sinks. Scoring: `cosine_similarity * retrieval_weight * (1 - inhibition_weight)`.
 
 **Mechanism 2: Associative Linking (Hebbian Learning)**
-- Memories co-retrieved for the same question get their co-retrieval count incremented
-- After 3+ co-retrievals, a strong link forms
-- During retrieval, one-hop expansion surfaces linked memories FAISS wouldn't return
-- Emergent behavior: multi-hop reasoning improves as the system discovers which facts go together
+
+Memories co-retrieved for the same question get their co-retrieval count incremented. After 3+ co-retrievals, a strong link forms. During retrieval, one-hop expansion surfaces associated memories that FAISS alone wouldn't return. Bounded to top-10 expansion to limit compute.
 
 **Mechanism 3: Belief Revision through Inhibition**
-- When a newer memory has high embedding similarity (>0.85) to an older one from a different session, the older one gets inhibited (`inhibition_weight = 0.7`)
-- Inhibited memories are suppressed but not deleted — queries about past states ("where did you used to live?") temporarily reduce inhibition
-- Directly tests LongMemEval's knowledge-update category
 
-**Mechanism 4: Memory Consolidation (Sleep-time Reorganization)**
-- Merge near-duplicate memories (cosine > 0.92): keep the stronger one, inhibit the weaker
-- Extra decay for never-retrieved memories
-- Generate centroid-based abstract "summary" memories from clusters of 3+ similar memories
-- Emergent behavior: episodic memories → semantic patterns
+When a newer memory has high embedding similarity (>0.85) to an older one from a different session, the older one gets inhibited (`inhibition_weight += 0.7`, capped at 0.95). Inhibited memories are suppressed, not deleted — queries containing past-state indicators ("used to", "originally", "before") temporarily reduce inhibition by 70%. Detection uses FAISS kNN (top-10 neighbors) instead of O(n^2) brute-force.
 
-**Run:**
+**Mechanism 4: Memory Consolidation**
 
-```bash
-# All mechanisms enabled (default)
-python run_experiment.py lme --mode neuroplastic
+Periodic offline pass: merge near-duplicates (cosine > 0.92, keep higher-weight survivor), apply extra decay to never-retrieved memories, and generate centroid-based abstract summary memories from clusters of 3+ similar memories. Abstractions get elevated retrieval weight (1.5x) to surface patterns over individual episodes.
 
-# Ablations
-python run_experiment.py lme --mode neuroplastic --no_ltp
-python run_experiment.py lme --mode neuroplastic --no_associations
-python run_experiment.py lme --mode neuroplastic --no_inhibition
-python run_experiment.py lme --mode neuroplastic --no_consolidation
-```
+#### Ablation Table
 
-**Key files:**
-- `neuroplastic_memory.py` — `RetrievalPlasticity`, `AssociationGraph`, `BeliefRevisionDetector`, `ConsolidationEngine`, `NeuroplasticMemory`
+| System | LME Overall | LME-KU | LME-TR | LME-MR |
+|--------|-------------|--------|--------|--------|
+| C: Multi-signal (base) | *running* | | | |
+| C + Inhibition only | *running* | | | |
+| C + All (Neuroplastic) | *running* | | | |
 
-**Architecture:**
+*Ablation runs in progress. Each mechanism can be independently disabled: `--no_ltp`, `--no_associations`, `--no_inhibition`, `--no_consolidation`.*
+
+---
+
+## Architecture
 
 ```
 Message Stream
@@ -416,38 +203,94 @@ Message Stream
 
 ---
 
-## Results
+## Reproduction
 
-### LoCoMo Benchmark (10 conversations, 1540 questions)
+### Setup
 
-| Config | Memories | Compression | Overall | Single-hop | Temporal | Multi-hop | Open-domain | vs Baseline |
-|--------|----------|------------|---------|------------|----------|-----------|-------------|-------------|
-| Naive Baseline | 5882/5882 | 0% | **62.0%** | 54.3% | 60.7% | 44.8% | 67.1% | — |
-| Surprise t=0.2 | 3808/5882 | 35.3% | 57.9% | 55.3% | 49.8% | 43.8% | 63.5% | -4.1% |
-| **Enhanced t=0.2** | **3700/5314** | **30.4%** | **61.6%** | **57.1%** | **59.5%** | **44.8%** | **65.9%** | **-0.4%** |
+```bash
+git clone https://github.com/VihAMBR/gated-mem.git
+cd gated-mem
+pip install -r requirements.txt
+python -m spacy download en_core_web_sm
 
-### LongMemEval Benchmark (LongMemEval_S, 500 instances, ~115K tokens each)
+# Configure API key
+cp .env.example .env
+# Edit .env and add your OpenAI API key
 
-| Config | IE-User | IE-Asst | IE-Pref | MR | TR | KU | Overall |
-|--------|---------|---------|---------|-----|-----|-----|---------|
-| Naive (store all) | 95.7% | 98.2% | 36.7% | 54.9% | 67.7% | 84.6% | **72.4%** |
-| Enhanced gated | *running* | | | | | | |
-| Inhibition-only | *running* | | | | | | |
-| **Neuroplastic** | *running* | | | | | | |
+# Download LongMemEval dataset
+mkdir -p LongMemEval/data
+curl -sL -o LongMemEval/data/longmemeval_s_cleaned.json \
+  "https://huggingface.co/datasets/xiaowu0162/longmemeval-cleaned/resolve/main/longmemeval_s_cleaned.json"
+```
 
-*Enhanced, inhibition, and neuroplastic runs are in progress. Results will be updated when complete.*
+**Requirements:** Python 3.10+, OpenAI API key (for GPT-4o-mini). The embedding model (`all-MiniLM-L6-v2`, ~80MB) downloads automatically on first run.
 
-### Key Findings
+### Quick Test
 
-**LoCoMo:**
-- **Enhanced gating matches the baseline while storing 30% less data.** At 61.6% vs 62.0%, the difference is 0.4% — within noise on 1540 questions.
-- **Temporal questions nearly fully recovered** (49.8% → 59.5%, vs baseline 60.7%). The temporal bypass reclaims what pure surprise-gating destroys.
-- **Single-hop actually improves** (54.3% → 57.1%). Entity novelty bypass captures factual mentions that cosine similarity sometimes misses.
+```bash
+python test_quick.py  # 5 questions, ~30 seconds
+```
 
-**LongMemEval:**
-- **Naive baseline achieves 72.4% overall** on LongMemEval_S. Strong on information extraction (95-98% for user/assistant) but weaker on multi-session reasoning (54.9%) and preferences (36.7%).
-- **Knowledge updates score 84.6%** — already strong without inhibition. The hypothesis is that belief revision via inhibition will push this higher.
-- **Temporal reasoning at 67.7%** — the enhanced gated encoder's temporal bypass should help here.
+### RQ1: Encoding Experiments
+
+```bash
+# LoCoMo
+python run_experiment.py naive_baseline                                          # System A
+python run_experiment.py surprise_gated --threshold 0.2                          # System B
+python run_experiment.py enhanced_gated --threshold 0.2                          # System C
+python run_experiment.py threshold_sweep --quick                                 # Sensitivity analysis
+
+# LongMemEval
+python run_experiment.py lme --mode naive                                        # System A
+python run_experiment.py lme --mode enhanced                                     # System C
+```
+
+### RQ2: Plasticity Experiments
+
+```bash
+# Full neuroplastic (all 4 mechanisms)
+python run_experiment.py lme --mode neuroplastic
+
+# Ablations (disable one mechanism at a time)
+python run_experiment.py lme --mode neuroplastic --no_ltp
+python run_experiment.py lme --mode neuroplastic --no_associations
+python run_experiment.py lme --mode neuroplastic --no_inhibition
+python run_experiment.py lme --mode neuroplastic --no_consolidation
+
+# Inhibition only (no LTP/associations/consolidation)
+python run_experiment.py lme --mode inhibition
+```
+
+### Utilities
+
+```bash
+python run_experiment.py compare                                                 # Cross-experiment comparison table
+
+# Run phases individually
+python run_naive_baseline.py --output results/my_run.json                        # Generate only
+python evals.py --input_file results/my_run.json --output_file results/evals.json # Evaluate only
+python generate_scores.py --input_path results/evals.json                        # Score only
+```
+
+All runners support **resume** — if interrupted, re-run the same command and it skips completed work.
+
+### Parameters
+
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `--top_k` | 30 | Memories retrieved per query |
+| `--threshold` | 0.2-0.3 | Surprise cutoff (fixed: absolute, adaptive: percentile) |
+| `--mode` | `fixed` | `fixed` or `adaptive` threshold mode |
+| `--metric` | `nearest_neighbor` | `nearest_neighbor` or `centroid` surprise metric |
+| `--warmup` | 3 | Always store first N messages unconditionally |
+| `--max_convs` | None | Limit LoCoMo conversations (for testing) |
+| `--max_instances` | None | Limit LongMemEval instances (for testing) |
+| `--eval_workers` | 2-4 | Parallel threads for LLM judge |
+| `--answer_workers` | 4 | Parallel threads for answer generation |
+
+### Rate Limits
+
+OpenAI API rate limits are the main bottleneck. The code has built-in exponential backoff (up to 60s, 8 retries). Use `--max_convs 2` or `--max_instances 10` for quick tests.
 
 ---
 
@@ -455,78 +298,28 @@ Message Stream
 
 ```
 gated-mem/
-├── run_experiment.py            # Unified entry point for all experiments
-├── run_naive_baseline.py        # Experiment 1: naive baseline (LoCoMo)
-├── run_gated_baseline.py        # Experiment 2: surprise-gated (LoCoMo)
-├── run_enhanced_gated.py        # Experiment 3: enhanced gated (LoCoMo)
-├── run_longmemeval.py           # Experiment 6: LongMemEval adapter & runner
-├── eval_longmemeval.py          # LongMemEval judge (official prompts per type)
-├── surprise_gated_encoder.py    # Core: SurpriseGatedEncoder class
-├── enhanced_gated_encoder.py    # Enhanced: temporal/entity bypass + MemoryRecord
-├── neuroplastic_memory.py       # Neuroplastic: LTP/LTD, associations, inhibition, consolidation
-├── evals.py                     # LoCoMo evaluation pipeline (BLEU + F1 + LLM judge)
+├── run_experiment.py            # Unified CLI for all experiments
+├── run_naive_baseline.py        # System A: naive baseline (LoCoMo)
+├── run_gated_baseline.py        # System B: surprise-gated (LoCoMo)
+├── run_enhanced_gated.py        # System C: multi-signal gated (LoCoMo)
+├── run_longmemeval.py           # Systems A/B/C + neuroplastic (LongMemEval)
+├── eval_longmemeval.py          # LongMemEval judge (official per-type prompts)
+├── surprise_gated_encoder.py    # Surprise gate: SurpriseGatedEncoder
+├── enhanced_gated_encoder.py    # Multi-signal: TemporalDetector, EntityTracker, MemoryRecord
+├── neuroplastic_memory.py       # Plasticity: LTP, Associations, Inhibition, Consolidation
+├── evals.py                     # LoCoMo evaluation (BLEU + F1 + LLM judge)
 ├── generate_scores.py           # Per-category score aggregation
 ├── analyze_results.py           # Cross-experiment comparison table
 ├── test_quick.py                # 5-question smoke test
-├── prompts.py                   # Prompt variants (Mem0, graph, Zep)
+├── prompts.py                   # Answer prompt variants
 ├── metrics/
-│   ├── llm_judge.py             # GPT-4o-mini judge (CORRECT/WRONG)
+│   ├── llm_judge.py             # GPT-4o-mini judge
 │   └── utils.py                 # BLEU, F1 calculations
 ├── dataset/
 │   └── locomo10.json            # LoCoMo benchmark (10 conversations)
-├── LongMemEval/                 # LongMemEval repo + data (gitignored, see Setup)
-├── results/                     # Benchmark results (committed)
+├── LongMemEval/                 # LongMemEval repo + data (gitignored)
+├── results/                     # All benchmark results (committed)
 ├── requirements.txt
 ├── .env.example
 └── .gitignore
 ```
-
-## Pipeline Architecture
-
-```
-LoCoMo (dataset/locomo10.json)          LongMemEval (LongMemEval/data/*.json)
-         │                                        │
-         ├──► run_naive_baseline.py                ├──► run_longmemeval.py --mode naive
-         ├──► run_gated_baseline.py                ├──► run_longmemeval.py --mode enhanced
-         ├──► run_enhanced_gated.py                ├──► run_longmemeval.py --mode inhibition
-         │                                         ├──► run_longmemeval.py --mode neuroplastic
-         │                                         │
-         │    Shared modules:                      │
-         │    ├── surprise_gated_encoder.py         │
-         │    ├── enhanced_gated_encoder.py         │
-         │    └── neuroplastic_memory.py            │
-         │                                         │
-         ▼                                         ▼
-    results/*.json                          results/lme_*.json
-         │                                         │
-         ▼                                         ▼
-    evals.py (BLEU + F1 + LLM Judge)       eval_longmemeval.py (official prompts)
-         │                                         │
-         ▼                                         ▼
-    results/*_evals.json                    results/lme_*_scored.json
-```
-
-## Running Individual Components
-
-If you need finer control, you can run each phase separately:
-
-```bash
-# Phase 1: Generate answers only
-python run_naive_baseline.py --dataset dataset/locomo10.json --output results/my_run.json
-
-# Phase 2: Evaluate answers only
-python evals.py --input_file results/my_run.json --output_file results/my_run_evals.json --max_workers 2
-
-# Phase 3: Print scores only
-python generate_scores.py --input_path results/my_run_evals.json
-```
-
-Both `run_naive_baseline.py` and `run_gated_baseline.py` support **resume** — if interrupted, re-run the same command and it will skip already-completed conversations.
-
-## Rate Limits
-
-OpenAI API rate limits are the main bottleneck. Both the answer generation and LLM judge phases call GPT-4o-mini. The code has built-in exponential backoff (up to 60s wait, 8 retries). If you're hitting limits:
-
-- Use `--max_convs 2` to test with fewer conversations
-- Use `--eval_workers 1` (default is 2) to reduce judge parallelism
-- Expect ~1-2 questions/second under normal conditions, dropping during rate limits

@@ -7,3 +7,5 @@ build/
 .DS_Store
 nltk_data/
 LongMemEval/
+.claude/
+results/lme_embedding_cache.pkl

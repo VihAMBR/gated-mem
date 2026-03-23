@@ -1,0 +1,38 @@
+[
+  {
+    "question_id": "ef66a6e5",
+    "question_type": "multi-session",
+    "question": "How many sports have I played competitively in the past?",
+    "answer": "two",
+    "hypothesis": "You have played soccer and tennis competitively in the past, as you mentioned your experience with both sports.",
+    "response_time": 4.490834951400757,
+    "user_stored": 221,
+    "user_seen": 221,
+    "asst_stored": 224,
+    "asst_seen": 224
+  },
+  {
+    "question_id": "77eafa52",
+    "question_type": "multi-session",
+    "question": "How much more did I have to pay for the trip after the initial quote?",
+    "answer": "$300",
+    "hypothesis": "After the initial quote of $2,500 for the entire trip, the corrected price was $2,800, which means you had to pay an additional $300.",
+    "response_time": 13.265316724777222,
+    "user_stored": 262,
+    "user_seen": 262,
+    "asst_stored": 265,
+    "asst_seen": 265
+  },
+  {
+    "question_id": "gpt4_1a1dc16d",
+    "question_type": "temporal-reasoning",
+    "question": "Which event happened first, the meeting with Rachel or the pride parade?",
+    "answer": "The meeting with Rachel",
+    "hypothesis": "The pride parade happened on May 1st, while the meeting with Rachel took place on April 10th. Therefore, the meeting with Rachel happened first.",
+    "response_time": 16.332283973693848,
+    "user_stored": 224,
+    "user_seen": 224,
+    "asst_stored": 229,
+    "asst_seen": 229
+  }
+]
